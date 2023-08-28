@@ -13,6 +13,7 @@ RUN groupadd -g $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Automatically install the latest version of packages available listed below
-RUN apt-get update && apt-get install -y \
-    curl \
-    git
+RUN apt-get update \
+    && apt-get install -y curl git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*

@@ -1,0 +1,12 @@
+{
+  "name": "dev-container-rust",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev_container",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": ["EditorConfig.EditorConfig", "rust-lang.rust-analyzer"]
+    }
+  }
+}

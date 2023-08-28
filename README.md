@@ -15,10 +15,29 @@ on your local machine.
   - Dev Containers
   - Docker
 
+## Structure
+
+- .devcontainer
+  - devcontainer.json
+    - a config file that defines the relationships between dev container and docker container
+  - docker-compose.yml
+    - a file that creates a Docker container based on the image created in Dockerfile
+  - Dockerfile
+    - a file that creates a Docker image and customizes which tools to add to the image
+- workspace
+  - (-- Your Rust Projects here --)
+
 ## How to use
 
 1. Run your Docker Desktop
 2. Select the menu "Dev Containers: Reopen in Container". (on Windows, press Ctrl + Shift + p to open the dropdown menu)
+3. Start your project from scratch or copy your existing one!
+
+e.g. Create a Rust binary project from scratch
+
+```
+cargo new [--your project name--]
+```
 
 ## Other tips
 

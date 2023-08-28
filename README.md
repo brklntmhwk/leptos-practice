@@ -1,6 +1,6 @@
 # Dev Container for Rust
 
-This is sort of a template playground for Rust coding where you can work on Rust with ease, and without worries about installing additional applications.
+This is a playground for Rust coding where you can work on Rust with ease, consistency, and without worries about installing additional applications on your local to get along with Rust.
 
 ## Prerequisites
 

@@ -30,7 +30,7 @@ on your local machine.
 ## How to use
 
 1. Run your Docker Desktop
-2. Select the menu "Dev Containers: Reopen in Container". (on Windows, press Ctrl + Shift + p to open the dropdown menu)
+2. Select the menu "Dev Containers: Reopen in Container". (on Windows, press Ctrl + Shift + p or F1 to open the dropdown menu)
 3. Start your project from scratch or copy your existing one!
 
 e.g. Create a Rust binary project from scratch
@@ -42,3 +42,4 @@ cargo new [--your project name--]
 ## Other tips
 
 - To exit the container, select the menu "Dev Containers: Reopen in Local".
+- To delete the container from Docker, select the menu "Dev Containers: Clean up Dev containers..." and which one to do so.

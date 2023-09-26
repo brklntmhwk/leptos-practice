@@ -86,7 +86,9 @@ dependencies = [
  "leptos_axum",
  "leptos_meta",
  "leptos_router",
+ "sqlx",
  "thiserror",
+ "tokio",
 ]
 
 [[package]]

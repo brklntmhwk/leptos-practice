@@ -14,7 +14,9 @@ leptos_axum = { workspace = true, optional = true }
 leptos_meta.workspace = true
 leptos_router.workspace = true
 http.workspace = true
+sqlx.workspace = { workspace = true, optional = true }
 thiserror.workspace = true
+tokio.workspace = { workspace = true, optional = true }
 
 [features]
 default= []

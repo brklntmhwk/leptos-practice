@@ -5,6 +5,8 @@ members = [
   "common",
   "frontend"
 ]
+
+# Add this to resolve the warning: some crates are on edition 2021 which defaults to resolver = "2"
 resolver = "2"
 
 [workspace.package]
@@ -17,6 +19,7 @@ edition = "2021"
 codegen-units = 1
 lto = true
 opt-level = 'z'
+strip = true # Strip unnecessary info away to reduce the binary size
 
 [workspace.dependencies]
 axum = "0.6.11"

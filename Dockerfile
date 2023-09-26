@@ -7,10 +7,10 @@ FROM clux/muslrust:stable AS chef
 # Execute commands as root hereafter
 USER root
 
-# Install cargo-chef and other required crates
+# Install cargo-chef
 RUN cargo install --locked cargo-chef
 
-# Move to the currently working dir (This is inherited hereafter in other stages too)
+# Move to the currently working dir (This is inherited hereafter in other stages with FROM chef AS *** too)
 WORKDIR /rental-dvd-postgres-db
 
 #########################################################################
@@ -31,7 +31,11 @@ RUN cargo chef prepare --recipe-path recipe.json
 # Buy ingredients (some dep packages) based on the recipe
 #########################################################################
 FROM chef AS cacher
+
+# Copy recipe.json from the planning stage
 COPY --from=planner /rental-dvd-postgres-db/rental-dvd/recipe.json recipe.json
+
+# Cook (build) ingredients (dependencies) based on a recipe (recipe.json)
 RUN cargo chef cook --release --target x86_64-unknown-linux-musl --recipe-path recipe.json
 
 #########################################################################
@@ -53,9 +57,9 @@ RUN cargo build --release --target x86_64-unknown-linux-musl --bin backend
 #########################################################################
 FROM debian:bullseye-slim AS runtime
 
-# Set non-root user's args
+# Set non-root user's data (USERNAME should be the same as remoteUser in .devcontainer.json and app.user in docker-compose.yml)
 ARG USERNAME=vscode
-ARG USER_ID=1000
+ARG USER_ID=10001
 ARG USER_GID=$USER_ID
 
 # Add a non-root user
@@ -80,11 +84,13 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy the project app built in the builder stage
 COPY --from=builder /rental-dvd-postgres-db/target/x86_64-unknown-linux-musl/release/backend /usr/local/bin/
 
+# Make dirs for cargo and rustup
 RUN mkdir /usr/local/{rustup,cargo}
 
-# Add cargo bin and rustup to the PATH
+# Add cargo bin and rustup to the PATH, and designate the dirs made above as locations for cargo and rustup
 ENV RUSTUP_HOME="/usr/local/rustup" \
     CARGO_HOME="/usr/local/cargo" \
     PATH="/usr/local/cargo/bin:$PATH"
@@ -92,10 +98,7 @@ ENV RUSTUP_HOME="/usr/local/rustup" \
 # Install rustup
 RUN curl https://sh.rustup.rs -sSf | \
     sh -s -- --default-toolchain stable -y \
-    && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
-    && rustup --version \
-    && cargo --version \
-    && rustc --version
+    && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 
 # Update rustup, add WASM target to use WebAssembly in a Rust project, and install required crates on an as-needed basis
 RUN set -x \
@@ -109,4 +112,5 @@ RUN chown -R $USERNAME /usr/local/cargo/registry
 # Hereafter the non-root user executes commands
 USER $USERNAME
 
+# Execute the bin project
 CMD ["/usr/local/bin/backend"]

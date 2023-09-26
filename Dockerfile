@@ -57,17 +57,20 @@ RUN cargo build --release --target x86_64-unknown-linux-musl --bin backend
 #########################################################################
 FROM debian:bullseye-slim AS runtime
 
+# Copy the project app built in the builder stage
+COPY --from=builder /rental-dvd-postgres-db/target/x86_64-unknown-linux-musl/release/backend /usr/local/bin/
+
 # Set non-root user's data (USERNAME should be the same as remoteUser in .devcontainer.json and app.user in docker-compose.yml)
 ARG USERNAME=vscode
-ARG USER_ID=10001
+ARG USER_ID=1000
 ARG USER_GID=$USER_ID
 
-# Add a non-root user
+# Add a non-root user and allow them to become root or postgres
 RUN groupadd -g $USER_GID $USERNAME \
     && useradd -s /bin/bash -u $USER_ID -g $USER_GID -m $USERNAME -r || echo "User already exists." \
     && apt-get update \
     && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && echo $USERNAME ALL=\(root, postgres\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Automatically install the latest version of packages available listed below
@@ -80,15 +83,10 @@ RUN apt-get update \
         libssl-dev \
         pkg-config \
         postgresql \
+        unzip \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
-
-# Copy the project app built in the builder stage
-COPY --from=builder /rental-dvd-postgres-db/target/x86_64-unknown-linux-musl/release/backend /usr/local/bin/
-
-# Make dirs for cargo and rustup
-RUN mkdir /usr/local/{rustup,cargo}
 
 # Add cargo bin and rustup to the PATH, and designate the dirs made above as locations for cargo and rustup
 ENV RUSTUP_HOME="/usr/local/rustup" \
@@ -107,7 +105,7 @@ RUN set -x \
     && cargo install cargo-leptos
 
 # Change the ownership of Cargo registry to the non-root user
-RUN chown -R $USERNAME /usr/local/cargo/registry
+RUN chown -R $USERNAME:$USERNAME /usr/local/cargo/registry
 
 # Hereafter the non-root user executes commands
 USER $USERNAME

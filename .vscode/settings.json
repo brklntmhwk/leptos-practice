@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["devcontainer"]
+  "search.exclude": {
+    "**/target": true
+  },
+  "rust-analyzer.linkedProjects": [
+    "rental-dvd/common/Cargo.toml",
+    "rental-dvd/frontend/Cargo.toml",
+    "rental-dvd/backend/Cargo.toml",
+  ],
+  "lldb.verboseLogging": true,
+  "lldb.launch.initCommands": [
+    "settings set target.disable-aslr false"
+  ]
 }

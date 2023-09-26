@@ -1,0 +1,53 @@
+[workspace]
+members = [
+  "app",
+  "backend",
+  "common",
+  "frontend"
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+authors = ["brklntmhwk"]
+description = "A Rust app built with Axum, Leptos, SQLx(PostgreSQL), and more"
+edition = "2021"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 'z'
+
+[workspace.dependencies]
+axum = "0.6.11"
+bigdecimal = { version = "0.4.1", features = ["serde"]}
+cfg-if = "1.0.0"
+chrono = {version = "0.4.30", features = ["serde"]}
+console_error_panic_hook = "0.1.7"
+console_log = "1.0.0"
+dotenvy = "0.15.7"
+http = "0.2.9"
+leptos = { version = "0.4.10" }
+leptos_axum = { version = "0.4.10" }
+leptos_config = "0.4.10"
+leptos_meta = "0.4.10"
+leptos_router = "0.4.10"
+log = "0.4.17"
+serde = { version = "1.0.188", features = ["derive"] }
+simple_logger = "4.1.0"
+sqlx = { version = "0.7.1", features = [ "runtime-tokio", "tls-rustls", "postgres", "macros", "chrono", "bigdecimal" ] }
+thiserror = "1.0.40"
+tokio = { version = "1.32.0", features = ["full"] }
+wasm-bindgen = "0.2.87"
+
+[[workspace.metadata.leptos]]
+name = "rental-dvd-shop"
+bin-feaures = []
+bin-package = "backend"
+lib-features = []
+lib-package = "frontend"
+reload-port = 3001
+site-addr = "127.0.0.1:3000"
+site-pkg-dir = "pkg"
+site-root = "target/site"
+watch = false

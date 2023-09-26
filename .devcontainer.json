@@ -1,0 +1,30 @@
+{
+  "name": "rental-dvd-postgres-db",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "init": true,
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "lldb.executable": "/usr/bin/lldb",
+        "files.watcherExclude": {
+          "**/target/**": true
+        }
+      },
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "rust-lang.rust-analyzer",
+        "serayuzgur.crates",
+        "tamasfe.even-better-toml",
+        "vadimcn.vscode-lldb"
+      ]
+    }
+  },
+  "forwardPorts": [
+    5432
+  ]
+  // "postCreateCommand": "/bin/sh .devcontainer/postCreateCommand.sh"
+}

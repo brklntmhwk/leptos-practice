@@ -1,0 +1,22 @@
+[package]
+name = "backend"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+app = {path = "../app", default-features = false, features = ["ssr"]}
+common = { version = "0.1.0", path = "../common" }
+axum.workspace = true
+bigdecimal.workspace = true
+chrono.workspace = true
+dotenvy.workspace = true
+leptos = { workspace = true, features = [ "ssr" ]}
+leptos_axum.workspace = true
+log.workspace = true
+serde.workspace = true
+sqlx.workspace = true
+tokio.workspace = true

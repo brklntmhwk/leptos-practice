@@ -120,3 +120,8 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 
 - Whenever a certain field of a certain table is nullable, you need to make it optional as: ```Option<T>```
   - [Trait is not implemented for std::string::String](https://stackoverflow.com/questions/76699657/trait-is-not-implemented-for-stdstringstring)
+
+
+## Backlog
+
+- add comments to all lines in Dockerfile and tweak some existing ones

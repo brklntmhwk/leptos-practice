@@ -4,11 +4,10 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
 pub fn hydrate() {
-    // initializes logging using the `log` crate
-    _ = console_log::init_with_level(log::Level::Debug);
     console_error_panic_hook::set_once();
 
-    log!("Hydrating...");
+    tracing_wasm::set_as_global_default();
+    tracing::info!("tracing...");
 
     leptos::mount_to_body(move |cx| {
         view! { cx, <App/> }

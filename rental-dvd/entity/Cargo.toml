@@ -1,0 +1,25 @@
+[package]
+name = "entity"
+publish = false
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+edition.workspace = true
+
+[lib]
+name = "entity"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true, features = ["derive", "serde_derive", "alloc", "rc"] }
+thiserror.workspace = true
+tracing.workspace = true
+
+[dependencies.sea-orm]
+version = "0.12.3"
+features = []
+
+[features]
+default = ["server"]
+server = ["sea-orm/runtime-tokio-rustls", "sea-orm/sqlx-postgres"]
+client = []

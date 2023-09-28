@@ -26,5 +26,4 @@
   "forwardPorts": [
     5432
   ]
-  // "postCreateCommand": "/bin/sh .devcontainer/postCreateCommand.sh"
 }

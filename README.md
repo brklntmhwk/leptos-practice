@@ -4,7 +4,7 @@
 
 [PostgreSQL Tutorial](https://www.postgresqltutorial.com/) thankfully demonstrates how to get along with PostgreSQL by giving you a great example of real world database: Rental DVD shop.
 
-This project uses the example database in combination with Rust (mainly SQLx) inside a Docker container. You can get hands-on experience in PostgreSQL, and by extension, handling database relations quickly thanks to the out-of-the-box Docker container.
+This project uses the example database in combination with Rust (mainly SeaORM(SQLx) and Axum) inside a Docker container. You can get hands-on experience in PostgreSQL, and by extension, handling database relations quickly thanks to the out-of-the-box Docker container.
 
 ## Prerequisites
 
@@ -21,6 +21,8 @@ on your local machine.
 ## How to use
 
 All steps you need to take beforehand are the followings:
+
+
 
 ## Notes
 ### Specify which host to look up for database
@@ -93,6 +95,7 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 - [Module sqlx_postgres::types](https://docs.rs/sqlx-postgres/0.7.1/sqlx_postgres/types/index.html)
 
 ### Project's directory structure
+- [vault81/todo-vault](https://github.com/vault81/todo-vault)
 - [Full-stack Rust: A complete tutorial with examples](https://blog.logrocket.com/full-stack-rust-a-complete-tutorial-with-examples/)
 - [leptos-rs/cargo-leptos](https://github.com/leptos-rs/cargo-leptos)
 
@@ -120,8 +123,14 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 
 - Whenever a certain field of a certain table is nullable, you need to make it optional as: ```Option<T>```
   - [Trait is not implemented for std::string::String](https://stackoverflow.com/questions/76699657/trait-is-not-implemented-for-stdstringstring)
+- SeaORM offers a great CLI tool sea-orm-cli, with which automatic generation of entities out of existing database relations is possible in a heartbeat. You only need to execute this:
+```
+sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/dvdrental -o entity/src
+```
 
 
 ## Backlog
 
-- add comments to all lines in Dockerfile and tweak some existing ones
+- [x] add comments to all line blocks in Dockerfile and tweak some existing ones
+- [] introduce TailwindCSS and arrage the ecosystem
+- [x] introduce SeaORM

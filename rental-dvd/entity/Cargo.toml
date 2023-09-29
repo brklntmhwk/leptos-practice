@@ -15,11 +15,16 @@ serde = { workspace = true, features = ["derive", "serde_derive", "alloc", "rc"]
 thiserror.workspace = true
 tracing.workspace = true
 
+chrono = {version = "0.4.30", features = ["serde", "alloc"]}
+dotenvy = "0.15.7"
+figment = { version = "0.10.10", features = ["toml", "json", "env", "yaml"], optional = true }
+derive_more = "0.99.17"
+
 [dependencies.sea-orm]
 version = "0.12.3"
-features = []
+features = ["with-chrono"]
 
 [features]
 default = ["server"]
-server = ["sea-orm/runtime-tokio-rustls", "sea-orm/sqlx-postgres"]
+server = ["sea-orm/runtime-tokio-rustls", "sea-orm/sqlx-postgres", "dep:figment"]
 client = []

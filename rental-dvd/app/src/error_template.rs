@@ -1,10 +1,10 @@
 use cfg_if::cfg_if;
 use http::status::StatusCode;
 use leptos::*;
-use thiserror::Error;
 
 #[cfg(feature = "ssr")]
 use leptos_axum::ResponseOptions;
+use thiserror::Error;
 
 #[derive(Clone, Debug, Error)]
 pub enum AppError {
@@ -54,15 +54,16 @@ pub fn ErrorTemplate(
         }
     }}
 
-    view! {cx,
+    view! {
+        cx,
         <h1>{if errors.len() > 1 {"Errors"} else {"Error"}}</h1>
         <For
-            // a function that returns the items we're iterating over; a signal is fine
-            each= move || {errors.clone().into_iter().enumerate()}
+            // a function that returns the items to be iterated over; a signal is fine
+            each=move || {errors.clone().into_iter().enumerate()}
             // a unique key for each item as a reference
             key=|(index, _error)| *index
             // renders each item to a view
-            view= move |cx, error| {
+            view=move |cx, error| {
                 let error_string = error.1.to_string();
                 let error_code= error.1.status_code();
                 view! {

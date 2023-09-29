@@ -1,8 +1,17 @@
+#![allow(unused_imports)]
+#![allow(dead_code)]
+#![forbid(unsafe_code)]
+pub mod error_template;
+
+mod components;
+mod pages;
+
+#[cfg(feature = "ssr")]
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-pub mod error_template;
+use crate::{components::*, error_template::*, pages::*};
 
 #[component]
 pub fn App(cx: Scope) -> impl IntoView {
@@ -10,30 +19,18 @@ pub fn App(cx: Scope) -> impl IntoView {
 
     view! {
         cx,
+        <Title text="Rental DVD Shop"/>
         <Router>
-            <main>
+            <ErrorBoundary fallback=|cx, errors| {
+                view! {
+                    cx,
+                    <ErrorTemplate errors=errors/>
+                }
+            }>
                 <Routes>
-                    <Route path="" view=|cx| view! { cx, <HomePage />} />
+                    <Route path="/" view=|cx| view! { cx, <HomePage />} />
                 </Routes>
-            </main>
+            </ErrorBoundary>
         </Router>
-    }
-}
-
-#[component]
-fn HomePage(cx: Scope) -> impl IntoView {
-    let (count, set_count) = create_signal(cx, 0);
-    let on_click = move |_| set_count.update(|cnt| *cnt += 1);
-
-    view! {
-        cx,
-        <h1>"Welcome home!"</h1>
-        <button on:click=on_click>"Count up"</button>
-        <p>
-            {move || count.get()}
-        </p>
-        <p>
-            {count}
-        </p>
     }
 }

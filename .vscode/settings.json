@@ -3,6 +3,7 @@
     "**/target": true
   },
   "rust-analyzer.linkedProjects": [
+    "rental-dvd/app/Cargo.toml",
     "rental-dvd/backend/Cargo.toml",
     "rental-dvd/entity/Cargo.toml",
     "rental-dvd/frontend/Cargo.toml"

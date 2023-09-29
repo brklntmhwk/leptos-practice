@@ -4,7 +4,7 @@
 
 [PostgreSQL Tutorial](https://www.postgresqltutorial.com/) thankfully demonstrates how to get along with PostgreSQL by giving you a great example of real world database: Rental DVD shop.
 
-This project uses the example database in combination with Rust (mainly SeaORM(SQLx) and Axum) inside a Docker container. You can get hands-on experience in PostgreSQL, and by extension, handling database relations quickly thanks to the out-of-the-box Docker container.
+This project uses the example database in combination with Rust (mainly Leptos, SeaORM(SQLx), and Axum) inside a Docker container. You can get hands-on experience in PostgreSQL, and by extension, handling database relations quickly thanks to the out-of-the-box Docker container.
 
 ## Prerequisites
 
@@ -115,6 +115,7 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 ](https://qiita.com/yoshrc/items/8464f3b5eb346cc91d7b)
 - [Rustで”HelloWorld!”しようとしたら「error: linker `cc` not found」と表示された時の対処方法
 ](https://qiita.com/ismt7/items/a6b17b01b56f098b2dd5)
+- [rustup が "error: linker `cc` not found" で失敗 - Alpine Linux 3.17 (Rust 1.66)](https://scqr.net/ja/blog/2023/01/09/fix-rustup-failed-with-error-linker-cc-not-found-on-alpine-317-linux-rust-166/index.html)
 - [open ssl 不在によるcargo packageインストールエラー メモ](https://murakamipeipei.com/2022/12/31/open-ssl-%E4%B8%8D%E5%9C%A8%E3%81%AB%E3%82%88%E3%82%8Bcargo-package%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%A8%E3%83%A9%E3%83%BC-%E3%83%A1%E3%83%A2/)
 - [Google Git chromium/chrmiumos/platform/crosvm](https://chromium.googlesource.com/chromiumos/platform/crosvm/+/7a2592a2cb70d74cc9e71f3dd2329e6379c9e6c1/kokoro/Dockerfile)
 - [Warning: some crates are on edition 2021 which defaults to resolver = "2"](https://substrate.stackexchange.com/questions/9011/warning-some-crates-are-on-edition-2021-which-defaults-to-resolver-2)
@@ -132,5 +133,6 @@ sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/dvdre
 ## Backlog
 
 - [x] add comments to all line blocks in Dockerfile and tweak some existing ones
-- [] introduce TailwindCSS and arrage the ecosystem
+- [ ] introduce TailwindCSS and arrage the ecosystem
 - [x] introduce SeaORM
+- [ ] learn about Axum

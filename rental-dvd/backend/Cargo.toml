@@ -11,18 +11,20 @@ edition.workspace = true
 app = { path = "../app", default-features = false, features = ["ssr"]}
 entity = { path = "../entity" }
 
+http.workspace = true
 leptos = { workspace = true, features = [ "serde", "ssr" ]}
 leptos_axum.workspace = true
 leptos_meta = { workspace = true, features = ["ssr"] }
 leptos_router = { workspace = true, features = ["ssr"] }
 serde = { workspace = true, features = ["derive", "serde_derive", "alloc", "rc"] }
+tracing = { workspace = true, features = ["async-await", "log"] }
 
 anyhow = "1.0.75"
 axum = "0.6.11"
 bigdecimal = { version = "0.4.1", features = ["serde"]}
-chrono = {version = "0.4.30", features = ["serde"]}
-dotenvy = "0.15.7"
 log = "0.4.17"
 simple_logger = "4.1.0"
-sqlx = { version = "0.7.1", features = [ "runtime-tokio", "tls-rustls", "postgres", "macros", "chrono", "bigdecimal" ] }
 tokio = { version = "1.32.0", features = ["full"] }
+tracing-subscriber = { version = "0.3.17", features = ["once_cell", "serde", "serde_json", "tracing", "json", "time"] }
+tower = "0.4.13"
+tower-http = { version = "0.4.4", features = ["cors", "fs", "sensitive-headers", "tokio", "trace", "tracing"] }

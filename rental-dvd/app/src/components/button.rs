@@ -28,7 +28,7 @@ pub fn Button(
           "Clear"
         </button>
         <p>"Count:" {count}</p>
-        <p>{move || count.get()}</p>
+        // <p>{move || count.get()}</p>
       </div>
     }
 }

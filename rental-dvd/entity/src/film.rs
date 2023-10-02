@@ -2,6 +2,7 @@
 
 use super::sea_orm_active_enums::MpaaRating;
 use sea_orm::entity::prelude::*;
+// use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "film")]
@@ -21,7 +22,8 @@ pub struct Model {
     pub replacement_cost: Decimal,
     pub rating: Option<MpaaRating>,
     pub last_update: DateTime,
-    pub special_features: Option<Vec<String>>,
+    pub special_features: Option<String>,
+    // pub special_features: Option<Vec<String>>,
     #[sea_orm(column_type = "custom(\"tsvector\")")]
     pub fulltext: String,
 }

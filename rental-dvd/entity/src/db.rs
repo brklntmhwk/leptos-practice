@@ -9,7 +9,6 @@ use figment::{
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use tracing::info;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct DBConfig {
@@ -76,7 +75,7 @@ impl DB {
             .min_connections(config.min_connections.unwrap_or_default())
             .connect_timeout(Duration::from_secs(config.connect_timeout));
 
-        info!("Connecting to database: {:?}", config);
+        tracing::info!("Connecting to database: {:?}", config);
         if let Some(idle_timeout) = config.idle_timeout {
             options.idle_timeout(Duration::from_secs(idle_timeout));
         }
@@ -84,10 +83,6 @@ impl DB {
 
         Ok(Self { conn })
     }
-    // pub async fn run_migrations(&self) -> std::result::Result<(), Error> {
-    //     migration::Migrator::up(self.conn(), None).await?;
-    //     Ok(())
-    // }
     pub fn conn(&self) -> &DatabaseConnection {
         &self.conn
     }

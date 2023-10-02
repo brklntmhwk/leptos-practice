@@ -119,6 +119,9 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 - [open ssl 不在によるcargo packageインストールエラー メモ](https://murakamipeipei.com/2022/12/31/open-ssl-%E4%B8%8D%E5%9C%A8%E3%81%AB%E3%82%88%E3%82%8Bcargo-package%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%A8%E3%83%A9%E3%83%BC-%E3%83%A1%E3%83%A2/)
 - [Google Git chromium/chrmiumos/platform/crosvm](https://chromium.googlesource.com/chromiumos/platform/crosvm/+/7a2592a2cb70d74cc9e71f3dd2329e6379c9e6c1/kokoro/Dockerfile)
 - [Warning: some crates are on edition 2021 which defaults to resolver = "2"](https://substrate.stackexchange.com/questions/9011/warning-some-crates-are-on-edition-2021-which-defaults-to-resolver-2)
+- [Struct axum::routing::Router](https://docs.rs/axum/latest/axum/routing/struct.Router.html#what-s-in-routers-means)
+  - `Router<S> means a router that is missing a state of type S to be able to handle requests. It does not mean a Router that has a state of type S.`
+- [into_make_service implemented for Router<(), B> #1602](https://github.com/tokio-rs/axum/discussions/1602)
 
 ## Tips
 
@@ -128,6 +131,8 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 ```
 sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/dvdrental -o entity/src
 ```
+- `Extension(options): Extension<Arc<LeptosOptions>> → State(options): State<LeptosOptions>`
+ - To resolver the error: `no method named into_make_service found for struct Router<LeptosOptions>`, turn `Router<LeptosOptions>` into `Router<()>`
 
 
 ## Backlog

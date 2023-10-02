@@ -5,8 +5,8 @@ pub mod error_template;
 
 mod components;
 mod pages;
+mod server_function;
 
-#[cfg(feature = "ssr")]
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;

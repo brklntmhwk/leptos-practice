@@ -4,7 +4,7 @@ pub extern crate sea_orm;
 
 pub mod prelude;
 
-#[cfg(feature = "server")]
+#[cfg(feature = "server-side")]
 pub mod db;
 
 pub mod actor;

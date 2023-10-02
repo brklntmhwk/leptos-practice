@@ -18,6 +18,8 @@ WORKDIR /rental-dvd-shop
 # Make a recipe
 #########################################################################
 FROM chef AS planner
+
+# Copy the project dir
 COPY ./rental-dvd/ ./rental-dvd/
 
 # Move to the project dir

@@ -6,7 +6,8 @@ use crate::components::*;
 pub fn HomePage(cx: Scope) -> impl IntoView {
     view! {
         cx,
-        <h1>"Welcomeee home!"</h1>
+        <HeaderNav />
+        <h1>"Welcome home!"</h1>
         <Button>aaaa</Button>
     }
 }

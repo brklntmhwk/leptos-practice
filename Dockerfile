@@ -101,7 +101,7 @@ RUN curl https://sh.rustup.rs -sSf | \
     sh -s -- --default-toolchain stable -y \
     && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 
-# Update rustup, add WASM target to use WebAssembly in a Rust project, and install required crates on an as-needed basis
+# Update rustup, add WASM to build targets, and install required crates on an as-needed basis
 RUN set -x \
     && rustup update \
     && rustup target add wasm32-unknown-unknown \
@@ -109,6 +109,14 @@ RUN set -x \
 
 # Change the ownership of Cargo registry to the non-root user
 RUN chown -R $USERNAME:$USERNAME /usr/local/cargo/registry
+
+# Install standalone TailwindCSS CLI, give a permission to execute it
+RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
+    && chmod a+x tailwindcss-linux-x64 \
+    && mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
+
+# Change the ownership of the TailwindCSS CLI executable to the non-root user
+RUN chown -R $USERNAME:$USERNAME /usr/local/bin/tailwindcss
 
 # Hereafter the non-root user executes commands
 USER $USERNAME

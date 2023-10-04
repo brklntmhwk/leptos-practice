@@ -19,10 +19,11 @@ chrono = { version = "0.4.30", features = ["serde", "alloc"]}
 dotenvy = "0.15.7"
 figment = { version = "0.10.10", features = ["toml", "json", "env", "yaml"], optional = true }
 derive_more = "0.99.17"
+rust_decimal = { version = "1.32.0", features = ["serde"]}
 
 [dependencies.sea-orm]
 version = "0.12.3"
-features = ["with-chrono"]
+features = ["macros", "with-chrono", "with-rust_decimal"]
 
 [features]
 default = ["server-side"]

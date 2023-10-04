@@ -1,3 +1,6 @@
+.git/
 **/target
 **/*.rs.bk
 screenshots
+Dockerfile
+docker-compose.yml

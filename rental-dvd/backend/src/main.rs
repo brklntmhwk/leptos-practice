@@ -34,8 +34,8 @@ async fn server_fn_handler(
         path,
         headers,
         query,
-        move |cx| {
-            provide_context(cx, db.clone());
+        move || {
+            provide_context(db.clone());
         },
         request,
     )
@@ -55,10 +55,10 @@ async fn leptos_routes_handler(
     let handler = leptos_axum::render_app_to_stream_with_context(
         options.clone(),
         // (*options).clone(),
-        move |cx| {
-            provide_context(cx, db.clone());
+        move || {
+            provide_context(db.clone());
         },
-        |cx| view! { cx, <App/> },
+        || view! {  <App/> },
     );
     handler(req).await.into_response()
 }
@@ -67,11 +67,13 @@ async fn leptos_routes_handler(
 async fn main() {
     tracing_subscriber::fmt().with_max_level(Level::INFO).init();
 
+    // register_server_functions().expect("Failed to register server functions..");
+
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
     let conf = get_configuration(None).await.unwrap();
     let leptos_options = conf.leptos_options;
     let addr = leptos_options.site_addr;
-    let routes = generate_route_list(|cx| view! { cx, <App/> }).await;
+    let routes = generate_route_list(|| view! { <App/> });
 
     let db_conf = DBConfig::figment().extract::<DBConfig>().unwrap();
     let db = DB::connect(&db_conf).await.unwrap();

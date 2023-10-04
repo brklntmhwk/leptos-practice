@@ -11,5 +11,18 @@
   "lldb.verboseLogging": true,
   "lldb.launch.initCommands": [
     "settings set target.disable-aslr false"
-  ]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "rust": "html",
+    "*rs": "html"
+  },
+  "files.associations": {
+    "*rs": "rust"
+  },
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": true
+  },
+  "css.validate": false
 }

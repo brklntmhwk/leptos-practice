@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl 2xl:text-4xl font-extrabold text-zinc-700 leading-normal;
+  }
+  h2 {
+    @apply text-2xl 2xl:text-3xl font-extrabold text-zinc-700 leading-normal;
+  }
+  h3 {
+    @apply text-lg xl:text-xl 2xl:text-2xl font-bold text-zinc-700 leading-snug;
+  }
+  h4 {
+    @apply text-base xl:text-lg 2xl:text-xl font-bold text-zinc-700 leading-snug;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply py-3 px-2.5 bg-zinc-400 text-white rounded-sm;
+  }
+}

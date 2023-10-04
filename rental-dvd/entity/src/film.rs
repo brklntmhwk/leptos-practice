@@ -2,9 +2,9 @@
 
 use super::sea_orm_active_enums::MpaaRating;
 use sea_orm::entity::prelude::*;
-// use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "film")]
 pub struct Model {
     #[sea_orm(primary_key)]
@@ -15,10 +15,13 @@ pub struct Model {
     pub release_year: Option<i32>,
     pub language_id: i16,
     pub rental_duration: i16,
+    // #[serde(skip_deserializing, default)]
     #[sea_orm(column_type = "Decimal(Some((4, 2)))")]
+    #[serde(default)]
     pub rental_rate: Decimal,
     pub length: Option<i16>,
     #[sea_orm(column_type = "Decimal(Some((5, 2)))")]
+    #[serde(skip_deserializing, default)]
     pub replacement_cost: Decimal,
     pub rating: Option<MpaaRating>,
     pub last_update: DateTime,

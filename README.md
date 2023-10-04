@@ -22,7 +22,7 @@ on your local machine.
 
 All steps you need to take beforehand are the followings:
 
-
+**~🏗 Under construction...~**
 
 ## Notes
 ### Specify which host to look up for database
@@ -106,6 +106,16 @@ ALTER COLUMN fulltext TYPE VARCHAR(255);
 ### Rust in general
 - [RustのフロントエンドフレームワークLeptosでWASM+SSR/Hydrationするアプリをつくる](https://nulab.com/ja/blog/nulab/rust-leptos-ssr-hydration/)
 
+### TailwindCSS standalone CLI setup
+- [Standalone CLI: Use Tailwind CSS without Node.js](https://tailwindcss.com/blog/standalone-cli)
+
+### VSCode settings of TailwindCSS Intellisense
+- [Leptos is becoming best rust web framwork and How to set up #125](https://github.com/leptos-rs/leptos/discussions/125)
+
+### Leptos version 0.5.0
+- [leptos-rs/leptos v0.5.0](https://github.com/leptos-rs/leptos/releases)
+  - Leptos and its peripheral crates of version 0.5.0 doesn't require you to explicitly add such boilerplates as cx, Scope, and so on!
+
 ### Error fix
 - [【Docker】 Rails + PostgreSQLの開発環境構築時に「psql: could not connect to server: No such file or directory」](https://qiita.com/rebi/items/e9625cedf0d41d1cfa28)
 - [Rust cannot represent Postgres numeric type as BigDecimal type](https://stackoverflow.com/questions/76477527/rust-cannot-represent-postgres-numeric-type-as-bigdecimal-type)
@@ -134,10 +144,10 @@ sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/dvdre
 - `Extension(options): Extension<Arc<LeptosOptions>> → State(options): State<LeptosOptions>`
  - To resolver the error: `no method named into_make_service found for struct Router<LeptosOptions>`, turn `Router<LeptosOptions>` into `Router<()>`
 
-
 ## Backlog
 
 - [x] add comments to all line blocks in Dockerfile and tweak some existing ones
-- [ ] introduce TailwindCSS and arrage the ecosystem
+- [x] introduce TailwindCSS and arrage the ecosystem
+- [x] display favicon from the public folder
 - [x] introduce SeaORM
 - [ ] learn about Axum

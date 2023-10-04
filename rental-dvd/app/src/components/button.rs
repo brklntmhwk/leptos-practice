@@ -3,27 +3,22 @@ use leptos_dom::*;
 use leptos_router::*;
 
 #[component]
-pub fn Button(
-    cx: Scope,
-    children: Children,
-    #[prop(optional, into)] class: String,
-) -> impl IntoView {
-    let (count, set_count) = create_signal(cx, 0);
+pub fn Button(children: Children) -> impl IntoView {
+    let (count, set_count) = create_signal(0);
     let count_up = move || set_count.update(|count| *count += 1);
     let clear_count = move |_| set_count.update(|count| *count = 0);
 
     view! {
-      cx,
-      <div>
+      <div class="flex gap-4">
         <button
           on:click=move |_| count_up()
-          class=format!("{class}")
+          class="btn"
         >
-          {children(cx)}
+          {children()}
         </button>
         <button
           on:click=clear_count
-          class=format!("{class}")
+          class="btn"
         >
           "Clear"
         </button>

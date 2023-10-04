@@ -3,17 +3,15 @@ use leptos_dom::*;
 use leptos_router::*;
 
 #[component]
-fn HeaderNavMenu(cx: Scope) -> impl IntoView {
+fn HeaderNavMenu() -> impl IntoView {
     view! {
-      cx,
-      <div>"Header Nav"</div>
+      <div class="bg-zinc-400 w-full">"Header Nav"</div>
     }
 }
 
 #[component]
-pub fn HeaderNav(cx: Scope) -> impl IntoView {
+pub fn HeaderNav() -> impl IntoView {
     view! {
-      cx,
       <h1>"Header"</h1>
       <div><HeaderNavMenu /></div>
     }

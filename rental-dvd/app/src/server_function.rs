@@ -1,10 +1,6 @@
 #[cfg(feature = "ssr")]
-use std::sync::{
-    atomic::{AtomicI32, Ordering},
-    Arc,
-};
+use std::sync::Arc;
 
-#[cfg(feature = "ssr")]
 use entity::{
     actor, address, category, city, country, customer, film, film_actor, film_category, inventory,
     language, payment,
@@ -23,28 +19,47 @@ use thiserror::Error;
 // use of deprecated associated function `leptos::ServerFn::register`: Explicit server function registration is no longer required on most platforms (including Linux, macOS, iOS, FreeBSD, Android, and Windows). If you are on another platform and need to explicitly register server functions, call ServerFn::register_explicit() instead.
 // #[cfg(feature = "ssr")]
 // pub fn register_server_functions() -> Result<(), ServerFnError> {
-//     FindCustomer::register()?;
+//     let _ = FindCustomer::register_explicit()?;
+//     let _ = FetchAllCustomers::register_explicit()?;
+//     let _ = Foo::register_explicit()?;
 //     Ok(())
 // }
 
 #[cfg(feature = "ssr")]
-pub fn db(cx: Scope) -> Result<Arc<entity::db::DB>, ServerFnError> {
-    use_context::<Arc<entity::db::DB>>(cx)
+pub fn db() -> Result<Arc<entity::db::DB>, ServerFnError> {
+    use_context::<Arc<entity::db::DB>>()
         .ok_or("Pool missing.")
         .map_err(|e| ServerFnError::ServerError(e.to_string()))
 }
 
-/* Server Functions
+/* # Server Functions
  * They must be async, return Result<T, ServerFnError>
  * Return types must implement serde::Serialize since args have to be sent to the server after being serialized
  * Args must implement serde::Serialize and serde::de::DeserializeOwned
  */
 
-#[server(FindCustomer, "/api")]
-pub async fn find_customer(cx: Scope, customer_id: i32) -> Result<customer::Model, ServerFnError> {
-    let db = db(cx)?;
+#[server(SearchFilms, "/api")]
+pub async fn search_films(title: String) -> Result<Vec<film::Model>, ServerFnError> {
+    let db = db()?;
 
-    let customer = customer::Entity::find_by_id(customer_id)
+    let films = film::Entity::find()
+        .filter(film::Column::Title.contains(title))
+        .all(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+
+    if films.is_empty() {
+        return Err(ServerFnError::ServerError("No films found".to_string()));
+    }
+
+    Ok(films)
+}
+
+#[server(FindCustomer, "/api")]
+pub async fn find_customer(customer_id: i32) -> Result<customer::Model, ServerFnError> {
+    let db = db()?;
+
+    let customer: Option<customer::Model> = customer::Entity::find_by_id(customer_id)
         .one(db.conn())
         .await
         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
@@ -57,10 +72,10 @@ pub async fn find_customer(cx: Scope, customer_id: i32) -> Result<customer::Mode
 }
 
 #[server(FetchAllCustomers, "/api")]
-pub async fn fetch_all_customers(cx: Scope) -> Result<Vec<customer::Model>, ServerFnError> {
-    let db = db(cx)?;
+pub async fn fetch_all_customers() -> Result<Vec<customer::Model>, ServerFnError> {
+    let db = db()?;
 
-    let customers = customer::Entity::find()
+    let customers: Vec<customer::Model> = customer::Entity::find()
         .all(db.conn())
         .await
         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
@@ -69,5 +84,10 @@ pub async fn fetch_all_customers(cx: Scope) -> Result<Vec<customer::Model>, Serv
         return Err(ServerFnError::ServerError("No customers found".to_string()));
     }
 
-    Ok(customers.into_iter().collect())
+    Ok(customers)
+}
+
+#[server(Foo, "/api")]
+pub async fn foo() -> Result<String, ServerFnError> {
+    Ok(String::from("Bar!"))
 }

@@ -1,13 +1,13 @@
 use leptos::*;
 
-use crate::components::*;
+use crate::{components::*, layouts::*};
 
 #[component]
-pub fn HomePage(cx: Scope) -> impl IntoView {
+pub fn HomePage() -> impl IntoView {
     view! {
-        cx,
-        <HeaderNav />
-        <h1>"Welcome home!"</h1>
-        <Button>aaaa</Button>
+        <MainLayout>
+            <h1 class="text-4xl bg-yellow-500">"Welcome home!"</h1>
+            <Button>"Count up"</Button>
+        </MainLayout>
     }
 }

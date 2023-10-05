@@ -32,27 +32,20 @@ impl IntoView for NavItem {
     fn into_view(self) -> View {
         if self.active {
             view! {
-              <li>
-                <A
-                    href=self.href()
-                    class="block py-2 pr-4 pl-3 text-white bg-orange-500 rounded md:p-0 md:text-orange-500 md:bg-transparent dark:text-white"
-                >
-                    {self.name}
-                </A>
+              <li class="py-2 text-zinc-300">
+                {self.name}
               </li>
-            }.into_view()
+            }
+            .into_view()
         } else {
             view! {
-              <li>
-                <A
-                    href=self.href()
-                    class="block py-2 pr-4 pl-3 text-gray-700 rounded md:p-0 md:border-0 dark:text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-white md:dark:hover:bg-transparent dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                    {self.name}
-                </A>
+              <li class="py-2 text-zinc-700 hover:text-zinc-500">
+                <A href=self.href()>{self.name}</A>
               </li>
-            }.into_view()
-        }.into_view()
+            }
+            .into_view()
+        }
+        .into_view()
     }
 }
 
@@ -68,17 +61,25 @@ fn Navbar() -> impl IntoView {
             },
             NavItem {
                 path: "/film-search".to_string(),
-                name: "Film Search".to_string(),
-                active: route.path().starts_with("/film-search"),
+                name: "Films".to_string(),
+                active: route.path() == "/film-search",
             },
         ]
     };
 
     view! {
-      <nav class="py-2.5 px-2 bg-purple-300 rounded border-gray-200">
-        <ul class="flex gap-4 mt-4 bg-pink-300 border border-gray-100">
-          {nav_items}
-        </ul>
+      <nav class="py-2.5 px-2 bg-purple-300 rounded-sm border-gray-200">
+        <div class="flex flex-wrap justify-between items-center mx-auto">
+          <A href="/" class="flex gap-3 items-center">
+            <div class="h-8 w-8">
+              {Svg::Logo}
+            </div>
+            <span class="text-base md:text-lg xl:text-xl font-semibold">"Rental DVD Shop"</span>
+          </A>
+          <ul class="flex gap-4 mt-2 bg-pink-300">
+            {nav_items}
+          </ul>
+        </div>
       </nav>
     }
 }
@@ -86,7 +87,7 @@ fn Navbar() -> impl IntoView {
 #[component]
 fn Header() -> impl IntoView {
     view! {
-      <div class="container">
+      <div class="">
         <Navbar/>
       </div>
     }
@@ -95,7 +96,7 @@ fn Header() -> impl IntoView {
 #[component]
 fn MainContainer(children: Children) -> impl IntoView {
     view! {
-      <div class="container grid gap-8 mx-auto p-3">
+      <div class="grid gap-8 p-3">
         {children()}
       </div>
     }
@@ -104,7 +105,7 @@ fn MainContainer(children: Children) -> impl IntoView {
 #[component]
 pub fn MainLayout(children: Children) -> impl IntoView {
     view! {
-      <div class="grid gap-5 overflow-y-auto">
+      <div class="container mx-auto grid gap-5 overflow-y-auto">
         <Header/>
         <MainContainer>{children()}</MainContainer>
       </div>

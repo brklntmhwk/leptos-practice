@@ -38,15 +38,33 @@ pub fn db() -> Result<Arc<entity::db::DB>, ServerFnError> {
  * Args must implement serde::Serialize and serde::de::DeserializeOwned
  */
 
-#[server(SearchFilms, "/api")]
-pub async fn search_films(title: String) -> Result<Vec<film::Model>, ServerFnError> {
+#[server(SearchFilms, "/api", "GetJson")]
+pub async fn search_films(keyword: Option<String>) -> Result<Vec<film::Model>, ServerFnError> {
     let db = db()?;
 
-    let films = film::Entity::find()
-        .filter(film::Column::Title.contains(title))
-        .all(db.conn())
-        .await
-        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+    // Fetch all films first
+    // let films = film::Entity::find()
+    //     .all(db.conn())
+    //     .await
+    //     .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+
+    // Then filter them by the keyword input on frontend if it's not empty
+    let films = if let Some(keyword) = keyword {
+        let filter = entity::sea_orm::Condition::any()
+            .add(film::Column::Title.contains(&keyword))
+            .add(film::Column::Description.contains(&keyword));
+
+        film::Entity::find()
+            .filter(filter)
+            .all(db.conn())
+            .await
+            .map_err(|e| ServerFnError::ServerError(format!("Inside if let:{e}")))?
+    } else {
+        film::Entity::find()
+            .all(db.conn())
+            .await
+            .map_err(|e| ServerFnError::ServerError(format!("Inside if let else {e}")))?
+    };
 
     if films.is_empty() {
         return Err(ServerFnError::ServerError("No films found".to_string()));

@@ -22,11 +22,12 @@ on your local machine.
 
 All steps you need to take beforehand are the followings:
 
-**~🏗 Under construction...~**
+**- 🏗 Under construction... -**
 
 ## Notes
-### Specify which host to look up for database
-In [the original tutorial](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql-linux/), you need to modify some commands: Specify which host to look up for database. These are the list of it.
+### Some modifications needed along the way of Postgres Tutorial
+In [the original tutorial](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql-linux/), you need to modify some commands. These are the list of it.
+#### Modify the curl command of downloading the sample DB zip
 -  How to download the sample db zip file is described as:
 ```
 curl -O https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip
@@ -36,6 +37,7 @@ To avoid it, execute the curl command below instead:
 ```
 curl -O https://www.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip
 ```
+#### Specify which host to look up for database
 - How to restore the database out of the tar archive is described as:
 ```
 pg_restore --dbname=dvdrental --verbose dvdrental.tar

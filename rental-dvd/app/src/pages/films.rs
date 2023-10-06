@@ -13,7 +13,7 @@ fn FilmTable() -> impl IntoView {
 }
 
 #[component]
-pub fn FilmSearchPage() -> impl IntoView {
+pub fn FilmsPage() -> impl IntoView {
     tracing::info!("FilmSearch Page");
 
     let (search_keyword, set_search_keyword) = create_signal("".to_string());

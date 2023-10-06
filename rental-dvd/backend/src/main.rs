@@ -69,7 +69,7 @@ async fn main() {
 
     // register_server_functions().expect("Failed to register server functions..");
 
-    // Setting get_configuration(None) means we'll be using cargo-leptos's env values
+    // Setting get_configuration(None) means using cargo-leptos's env values
     let conf = get_configuration(None).await.unwrap();
     let leptos_options = conf.leptos_options;
     let addr = leptos_options.site_addr;

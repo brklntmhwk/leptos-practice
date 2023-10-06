@@ -1,5 +1,5 @@
-mod film_search;
+mod films;
 mod home;
 
-pub use film_search::*;
+pub use films::*;
 pub use home::*;

@@ -42,12 +42,6 @@ pub fn db() -> Result<Arc<entity::db::DB>, ServerFnError> {
 pub async fn search_films(keyword: Option<String>) -> Result<Vec<film::Model>, ServerFnError> {
     let db = db()?;
 
-    // Fetch all films first
-    // let films = film::Entity::find()
-    //     .all(db.conn())
-    //     .await
-    //     .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
-
     // Then filter them by the keyword input on frontend if it's not empty
     let films = if let Some(keyword) = keyword {
         let filter = entity::sea_orm::Condition::any()
@@ -109,3 +103,51 @@ pub async fn fetch_all_customers() -> Result<Vec<customer::Model>, ServerFnError
 pub async fn foo() -> Result<String, ServerFnError> {
     Ok(String::from("Bar!"))
 }
+
+#[server(LoginToStaff, "/api")]
+pub async fn login_to_staff(staff_id: i32, username: String) -> Result<(), ServerFnError> {
+    let db = db()?;
+
+    let staff = staff::Entity::find_by_id(staff_id)
+        .filter(staff::Column::Username.eq(username))
+        .one(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+
+    // Verification logic here...
+    Ok(())
+}
+
+#[server(DeleteRental, "/api")]
+pub async fn delete_rental(rental_id: i32) -> Result<(), ServerFnError> {
+    let db = db()?;
+
+    let rental = rental::Entity::find_by_id(rental_id)
+        .one(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?
+        .unwrap();
+
+    rental
+        .delete(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("Failed to delete rental".to_string()))?;
+
+    Ok(())
+}
+
+/* At a DVD rental store...
+ * - customers should be able to rental and return DVDs with a machine or at the casher
+ *  - Upon rentals and returns,
+ * - staffs should be able to
+ *
+ * what customers are permitted to do are:
+ * - AddRental
+ * what staffs are permitted to do are:
+ * - LoginToStaff authenticates the input info and redirects to the staff's dashboard
+ * - AddCustomer creates a new member of the store when requested by a customer
+ * - DeleteCustomer deletes a member when requested by a customer
+ * what a DVD rental machine does are:
+ * -
+ * -
+ */

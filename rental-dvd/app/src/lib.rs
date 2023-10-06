@@ -43,7 +43,7 @@ pub fn App() -> impl IntoView {
             }>
                 <Routes>
                     <Route path="/" view=|| view! { <HomePage />} />
-                    <Route path="/film-search" view=|| view! { <FilmSearchPage />} />
+                    <Route path="/film" view=|| view! { <FilmsPage />} />
                 </Routes>
             </ErrorBoundary>
         </Router>

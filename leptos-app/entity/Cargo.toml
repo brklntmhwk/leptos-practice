@@ -1,0 +1,46 @@
+[package]
+name = "entity"
+publish = false
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+edition.workspace = true
+
+[lib]
+name = "entity"
+path = "src/lib.rs"
+
+[dependencies]
+migration = { path = "../migration", optional = true }
+
+serde = { workspace = true, features = [
+  "derive",
+  "serde_derive",
+  "alloc",
+  "rc",
+] }
+thiserror.workspace = true
+tracing.workspace = true
+
+dotenvy = "0.15.7"
+figment = { version = "0.10.10", features = [
+  "toml",
+  "json",
+  "env",
+  "yaml",
+], optional = true }
+derive_more = "0.99.17"
+
+[dependencies.sea-orm]
+version = "0.12.3"
+features = []
+
+[features]
+default = ["server-side"]
+server-side = [
+  "sea-orm/runtime-tokio-rustls",
+  "sea-orm/sqlx-postgres",
+  "dep:figment",
+  "dep:migration",
+]
+client-side = []

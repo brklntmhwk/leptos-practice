@@ -1,5 +1,5 @@
 {
-  "name": "rental-dvd-postgres-db",
+  "name": "leptos-practice",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",

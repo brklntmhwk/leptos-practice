@@ -1,14 +1,24 @@
 version: "3.9"
 services:
   app:
-    container_name: "rental-dvd"
-    build: .
+    container_name: "leptos-app"
+    build:
+      context: .
+      args:
+        - USERNAME=${USERNAME}
+        - USER_ID=${USER_ID}
+        - USER_GID=${USER_GID}
+        - PROJECT_DIR=${PROJECT_DIR}
+        - APP_DIR=${APP_DIR}
+        - BIN_TARGET=${BIN_TARGET}
     working_dir: "/workspace"
     volumes:
       - .:/workspace:cached
     command: sleep infinity
     network_mode: service:db
-    user: vscode
+    user: ${USERNAME}:${USERNAME}
+    env_file:
+      - .env
   db:
     image: postgres:14.1
     restart: unless-stopped

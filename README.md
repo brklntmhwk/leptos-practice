@@ -7,3 +7,7 @@ This repo walks you through a bunch of both client-side and server-side features
 ```
 sea-orm-cli migrate init
 ```
+
+## Reference
+- [SeaORM/docs/next/migration/setting-up-migration/](https://www.sea-ql.org/SeaORM/docs/next/migration/setting-up-migration/)
+- [vault81/todo-vault](https://github.com/vault81/todo-vault)

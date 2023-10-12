@@ -22,6 +22,7 @@ serde = { workspace = true, features = [
 thiserror.workspace = true
 tracing.workspace = true
 
+chrono = { version = "0.4.31", features = ["serde", "alloc"] }
 dotenvy = "0.15.7"
 figment = { version = "0.10.10", features = [
   "toml",
@@ -30,10 +31,11 @@ figment = { version = "0.10.10", features = [
   "yaml",
 ], optional = true }
 derive_more = "0.99.17"
+uuid = { version = "1.4.1", features = ["v4", "v7"] }
 
 [dependencies.sea-orm]
 version = "0.12.3"
-features = []
+features = ["with-time", "with-json", "with-uuid"]
 
 [features]
 default = ["server-side"]

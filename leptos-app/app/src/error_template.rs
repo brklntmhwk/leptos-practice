@@ -61,15 +61,6 @@ pub fn ErrorTemplate(
             each=move || {errors.clone().into_iter().enumerate()}
             // a unique key for each item as a reference
             key=|(index, _error)| *index
-            // renders each item to a view
-            // view=move | error| {
-            //     let error_string = error.1.to_string();
-            //     let error_code= error.1.status_code();
-            //     view! {
-            //         <h2>{error_code.to_string()}</h2>
-            //         <p>"Error: " {error_string}</p>
-            //     }
-            // }
             children=|error| {
                 let error_string = error.1.to_string();
                 let error_code= error.1.status_code();

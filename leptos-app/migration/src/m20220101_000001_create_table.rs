@@ -11,31 +11,19 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Lists::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Lists::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Lists::Id).uuid().not_null().primary_key())
                     .col(ColumnDef::new(Lists::Title).string().not_null())
-                    .clone(),
+                    .to_owned(),
             )
             .await?;
 
-         manager
+        manager
             .create_table(
                 Table::create()
                     .table(Todos::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Todos::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
-                    .col(ColumnDef::new(Todos::ListId).not_null())
+                    .col(ColumnDef::new(Todos::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Todos::ListId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .from(Todos::Table, Todos::ListId)
@@ -46,13 +34,9 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Todos::Description).string())
                     .col(ColumnDef::new(Todos::Done).boolean().not_null())
                     .col(ColumnDef::new(Todos::DueDate).date())
-                    .col(
-                        ColumnDef::new(Todos::CreatedAt).date_time().not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Todos::UpdatedAt).date_time().not_null(),
-                    )
-                    .clone(),
+                    .col(ColumnDef::new(Todos::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Todos::UpdatedAt).date_time().not_null())
+                    .to_owned(),
             )
             .await?;
 
@@ -61,11 +45,11 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Todos::Table).clone())
+            .drop_table(Table::drop().table(Todos::Table).to_owned())
             .await?;
 
         manager
-            .drop_table(Table::drop().table(Lists::Table).clone())
+            .drop_table(Table::drop().table(Lists::Table).to_owned())
             .await?;
 
         Ok(())
@@ -76,7 +60,7 @@ impl MigrationTrait for Migration {
 enum Lists {
     Table,
     Id,
-    Title
+    Title,
 }
 
 #[derive(DeriveIden)]

@@ -1,17 +1,16 @@
 #[cfg(feature = "ssr")]
 use std::sync::Arc;
 
-// use entity::{
-//     actor, address, category, city, country, customer, film, film_actor, film_category, inventory,
-//     language, payment,
-//     prelude::*,
-//     rental,
-//     sea_orm::{
-//         entity::ActiveModelTrait, query::QueryOrder, ColumnTrait, EntityTrait, ModelTrait,
-//         QueryFilter, Select,
-//     },
-//     sea_orm_active_enums, staff, store,
-// };
+use entity::{
+    chrono::NaiveDate,
+    lists,
+    prelude::*,
+    sea_orm::{
+        entity::ActiveModelTrait, query::QueryOrder, ColumnTrait, EntityTrait, ModelTrait,
+        QueryFilter, Select,
+    },
+    todos, uuid,
+};
 use leptos::*;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -34,116 +33,224 @@ pub async fn foo() -> Result<String, ServerFnError> {
     Ok(String::from("Bar!"))
 }
 
-// #[server(FetchFilm, "/api")]
-// pub async fn fetch_film(id: String) -> Result<film::Model, ServerFnError> {
-//     let db = db()?;
+#[server(AddList, "/api")]
+pub async fn add_list(
+    cx: Scope,
+    title: String,
+) -> Result<lists::Model, ServerFnError> {
+    let db = db(cx)?;
 
-//     let film = film::Entity::find_by_id(id.parse::<i32>().unwrap())
-//         .one(db.conn())
-//         .await
-//         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+    let list = lists::ActiveModel::new(title)
+        .insert(db.conn())
+        .await
+        .map_err(|e| {
+            let str = format!("{e}");
+            ServerFnError::ServerError(str)
+        })?;
 
-//     if film.is_none() {
-//         return Err(ServerFnError::ServerError("No film found".to_string()));
-//     }
+    Ok(list)
+}
 
-//     Ok(film.unwrap())
-// }
+#[server(FindList, "/api")]
+pub async fn find_list(
+    cx: Scope,
+    list_id: uuid::Uuid,
+) -> Result<lists::Model, ServerFnError> {
+    let db = db(cx)?;
 
-// #[server(SearchFilms, "/api")]
-// pub async fn search_films(keyword: Option<String>) -> Result<Vec<film::Model>, ServerFnError> {
-//     let db = db()?;
+    let list = lists::Entity::find_by_id(list_id)
+        .one(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
 
-//     tracing::debug!("search_films fired! 🔥");
+    if list.is_none() {
+        return Err(ServerFnError::ServerError("No list found".to_string()));
+    }
 
-//     // Then filter them by the keyword input on frontend if it's not empty
-//     let films = if let Some(keyword) = keyword {
-//         let filter = entity::sea_orm::Condition::any()
-//             .add(film::Column::Title.contains(&keyword))
-//             .add(film::Column::Description.contains(&keyword));
+    Ok(list.unwrap())
+}
 
-//         film::Entity::find()
-//             .filter(filter)
-//             .all(db.conn())
-//             .await
-//             .map_err(|e| {
-//                 tracing::error!("Failed to find films...: {}", e);
-//                 ServerFnError::ServerError(format!("{e}"))
-//             })?
-//     } else {
-//         film::Entity::find().all(db.conn()).await.map_err(|e| {
-//             tracing::error!("Failed to find films...: {}", e);
-//             ServerFnError::ServerError(format!("{e}"))
-//         })?
-//     };
+#[server(DeleteList, "/api")]
+pub async fn delete_list(
+    cx: Scope,
+    list_id: uuid::Uuid,
+) -> Result<(), ServerFnError> {
+    let db = db(cx)?;
 
-//     if films.is_empty() {
-//         return Err(ServerFnError::ServerError("No films found".to_string()));
-//     }
+    let list = lists::Entity::find_by_id(list_id)
+        .one(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
 
-//     Ok(films)
-// }
+    if list.is_none() {
+        return Err(ServerFnError::ServerError("No list found".to_string()));
+    }
 
-// #[server(FindCustomer, "/api")]
-// pub async fn find_customer(customer_id: i32) -> Result<customer::Model, ServerFnError> {
-//     let db = db()?;
+    list.unwrap().delete(db.conn()).await.map_err(|_| {
+        ServerFnError::ServerError("No list deleted".to_string())
+    })?;
 
-//     let customer: Option<customer::Model> = customer::Entity::find_by_id(customer_id)
-//         .one(db.conn())
-//         .await
-//         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+    Ok(())
+}
 
-//     if customer.is_none() {
-//         return Err(ServerFnError::ServerError("No customer found".to_string()));
-//     }
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Order {
+    Asc,
+    Desc,
+}
 
-//     Ok(customer.unwrap())
-// }
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TodoOrderBy {
+    Title(Order),
+    DueDate(Order),
+}
 
-// #[server(FetchAllCustomers, "/api")]
-// pub async fn fetch_all_customers() -> Result<Vec<customer::Model>, ServerFnError> {
-//     let db = db()?;
+#[server(ListTodos, "/api")]
+pub async fn list_todos(
+    cx: Scope,
+    list_id: uuid::Uuid,
+    search: Option<String>,
+    order_by: Option<TodoOrderBy>,
+) -> Result<Vec<todos::Model>, ServerFnError> {
+    let db = db(cx)?;
 
-//     let customers: Vec<customer::Model> = customer::Entity::find()
-//         .all(db.conn())
-//         .await
-//         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+    let list = lists::Entity::find_by_id(list_id)
+        .one(db.conn())
+        .await
+        .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
 
-//     if customers.is_empty() {
-//         return Err(ServerFnError::ServerError("No customers found".to_string()));
-//     }
+    if list.is_none() {
+        return Err(ServerFnError::ServerError("No list found".to_string()));
+    }
 
-//     Ok(customers)
-// }
+    let todos = list.unwrap().find_related(todos::Entity);
 
-// #[server(LoginToStaff, "/api")]
-// pub async fn login_to_staff(staff_id: i32, username: String) -> Result<(), ServerFnError> {
-//     let db = db()?;
+    let todos = if let Some(search) = search {
+        let filter = entity::sea_orm::Condition::any()
+            .add(todos::Column::Title.contains(&search))
+            .add(todos::Column::Description.contains(&search));
 
-//     let staff = staff::Entity::find_by_id(staff_id)
-//         .filter(staff::Column::Username.eq(username))
-//         .one(db.conn())
-//         .await
-//         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?;
+        todos.filter(filter)
+    } else {
+        todos
+    };
 
-//     // Verification logic here...
-//     Ok(())
-// }
+    let todos = todos
+        .order_by_asc(todos::Column::CreatedAt)
+        .all(db.conn())
+        .await
+        .map_err(|err| {
+            tracing::error!("Failed to list todos: {}", err);
+            ServerFnError::ServerError("No todos found".to_string())
+        })?;
 
-// #[server(DeleteRental, "/api")]
-// pub async fn delete_rental(rental_id: i32) -> Result<(), ServerFnError> {
-//     let db = db()?;
+    Ok(todos)
+}
 
-//     let rental = rental::Entity::find_by_id(rental_id)
-//         .one(db.conn())
-//         .await
-//         .map_err(|e| ServerFnError::ServerError(format!("{e}")))?
-//         .unwrap();
+#[server(AddTodo, "/api")]
+pub async fn add_todo(
+    cx: Scope,
+    list_id: uuid::Uuid,
+    title: String,
+    description: Option<String>,
+    due_date: Option<String>,
+) -> Result<(), ServerFnError> {
+    let db = db(cx)?;
 
-//     rental
-//         .delete(db.conn())
-//         .await
-//         .map_err(|_| ServerFnError::ServerError("Failed to delete rental".to_string()))?;
+    let due_date = due_date
+        .and_then(|str| if str.is_empty() { None } else { Some(str) })
+        .map(|string| {
+            let naive_date = NaiveDate::parse_from_str(&string, "%Y-%m-%d")
+                .map_err(|op| ServerFnError::ServerError(format!("{}", op)))?;
+            Ok(naive_date)
+        })
+        .transpose()?;
 
-//     Ok(())
-// }
+    todos::ActiveModel::new(list_id, title, description, due_date)
+        .insert(db.conn())
+        .await
+        .map_err(|e| {
+            let str = format!("{e}");
+            ServerFnError::ServerError(str)
+        })?;
+
+    Ok(())
+}
+
+#[server(DeleteTodo, "/api")]
+pub async fn delete_todo(
+    cx: Scope,
+    id: uuid::Uuid,
+) -> Result<(), ServerFnError> {
+    let db = db(cx)?;
+
+    let todo = todos::Entity::find_by_id(id)
+        .one(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No todo found".to_string()))?
+        .expect("should be unreachable #160");
+
+    todo.delete(db.conn()).await.map_err(|_| {
+        ServerFnError::ServerError("No todo deleted".to_string())
+    })?;
+    Ok(())
+}
+
+#[server(EditTodo, "/api")]
+pub async fn edit_todo(
+    cx: Scope,
+    id: uuid::Uuid,
+    title: String,
+    description: Option<String>,
+    due_date: Option<String>,
+) -> Result<(), ServerFnError> {
+    let db = db(cx)?;
+
+    let due_date = due_date
+        .and_then(|str| if str.is_empty() { None } else { Some(str) })
+        .map(|string| {
+            let naive_date = NaiveDate::parse_from_str(&string, "%Y-%m-%d")
+                .map_err(|op| ServerFnError::ServerError(format!("{}", op)))?;
+            Ok(naive_date)
+        })
+        .transpose()?;
+
+    let mut updated: todos::ActiveModel = todos::Entity::find_by_id(id)
+        .one(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No todo found".to_string()))?
+        .expect("should be unreachable #183")
+        .into();
+
+    updated.title = entity::sea_orm::Set(title);
+    updated.description = entity::sea_orm::Set(description);
+    updated.due_date = entity::sea_orm::Set(due_date);
+
+    updated.update(db.conn()).await.map_err(|_| {
+        ServerFnError::ServerError("No to-do updated".to_string())
+    })?;
+
+    Ok(())
+}
+
+#[server(ToggleTodo, "/api")]
+pub async fn toggle_todo(
+    cx: Scope,
+    id: uuid::Uuid,
+) -> Result<(), ServerFnError> {
+    let db = db(cx)?;
+    let mut updated: todos::ActiveModel = todos::Entity::find_by_id(id)
+        .one(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No to-do found".to_string()))?
+        .unwrap()
+        .into();
+
+    updated.done = entity::sea_orm::Set(!updated.done.unwrap());
+
+    updated.update(db.conn()).await.map_err(|_| {
+        ServerFnError::ServerError("No to-do updated".to_string())
+    })?;
+
+    Ok(())
+}

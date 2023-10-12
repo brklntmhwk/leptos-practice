@@ -6,6 +6,7 @@ use figment::{
     value::{Dict, Map},
     Figment, Metadata, Profile, Provider,
 };
+use migration::MigratorTrait;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -91,6 +92,7 @@ impl DB {
 
     pub async fn run_migrations(&self) -> std::result::Result<(), Error> {
         migration::Migrator::up(self.conn(), None).await?;
+
         Ok(())
     }
 

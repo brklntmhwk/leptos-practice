@@ -321,6 +321,12 @@ dependencies = [
 
 [[package]]
 name = "atomic"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c59bdb34bc650a32731b31bd8f0829cc15d24a708ee31559e0bb34f2bc320cba"
+
+[[package]]
+name = "atomic"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d818003e740b63afc82337e3160717f4f63078720a810b7b903e70a5d1d2994"
@@ -710,8 +716,10 @@ checksum = "7f2c685bad3eb3d45a01354cedb7d5faa66194d1d58ba6e267a8de788f79db38"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
  "serde",
+ "wasm-bindgen",
  "windows-targets",
 ]
 
@@ -1100,6 +1108,7 @@ dependencies = [
 name = "entity"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "derive_more",
  "dotenvy",
  "figment",
@@ -1108,6 +1117,7 @@ dependencies = [
  "serde",
  "thiserror",
  "tracing",
+ "uuid",
 ]
 
 [[package]]
@@ -1164,7 +1174,7 @@ version = "0.10.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a014ac935975a70ad13a3bff2463b1c1b083b35ae4cb6309cfc59476aa7a181f"
 dependencies = [
- "atomic",
+ "atomic 0.6.0",
  "pear",
  "serde",
  "serde_json",
@@ -2139,6 +2149,7 @@ name = "migration"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "sea-orm",
  "sea-orm-migration",
 ]
 
@@ -4244,6 +4255,7 @@ version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "79daa5ed5740825c40b389c5e50312b9c86df53fccd33f281df655642b43869d"
 dependencies = [
+ "atomic 0.5.3",
  "getrandom",
  "serde",
 ]

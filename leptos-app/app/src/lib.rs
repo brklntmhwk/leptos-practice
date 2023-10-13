@@ -7,6 +7,7 @@ mod components;
 mod layouts;
 mod pages;
 mod server_function;
+mod utils;
 
 use leptos::*;
 use leptos_meta::*;
@@ -39,10 +40,8 @@ pub fn App() -> impl IntoView {
             }>
                 <Routes>
                     <Route path="/" view=Home/>
-                    <Route path="/todos" view=TodoList>
-                        <Route path=":id" view=TodoSingle/>
-                        <Route path="" view=NoTodo/>
-                    </Route>
+                    <Route path="/todo" view=MyTodoListsPage/>
+                    <Route path="/todo/:list_id" view=TodoListPage/>
                 </Routes>
             </ErrorBoundary>
         </Router>

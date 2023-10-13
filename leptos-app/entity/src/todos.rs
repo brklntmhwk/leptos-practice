@@ -32,12 +32,12 @@ pub enum Relation {
         on_update = "NoAction",
         on_delete = "Cascade"
     )]
-    Users,
+    Lists,
 }
 
 impl Related<super::lists::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Users.def()
+        Relation::Lists.def()
     }
 }
 
@@ -52,7 +52,7 @@ impl Model {
 impl Default for Model {
     fn default() -> Self {
         Self {
-             id: uuid::Uuid::new_v4(),
+            id: uuid::Uuid::new_v4(),
             list_id: uuid::Uuid::new_v4(),
             title: "default".to_string(),
             description: None,
@@ -74,7 +74,7 @@ impl ActiveModel {
         due_date: Option<Date>,
     ) -> Self {
         Self {
-            id: Set(uuid::Uuid::new_v7()),
+            id: Set(uuid::Uuid::new_v4()),
             list_id: Set(list_id),
             title: Set(title),
             description: Set(description),

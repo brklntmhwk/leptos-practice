@@ -51,6 +51,8 @@ impl IntoView for NavItem {
 
 #[component]
 fn Navbar() -> impl IntoView {
+    let (menu_open, set_menu_open) = create_signal(false);
+    let toggle_menu = move || set_menu_open.update(|curr| *curr = !*curr);
     let route = use_route();
     let nav_items = move || {
         vec![
@@ -60,9 +62,9 @@ fn Navbar() -> impl IntoView {
                 active: route.path() == "",
             },
             NavItem {
-                path: "/todos".to_string(),
-                name: "Todos".to_string(),
-                active: route.path().starts_with("/todos"),
+                path: "/todo".to_string(),
+                name: "Todo".to_string(),
+                active: route.path().starts_with("/todo"),
             },
         ]
     };
@@ -76,9 +78,23 @@ fn Navbar() -> impl IntoView {
             </div>
             <span class="text-base md:text-lg xl:text-xl font-semibold">"Rental DVD Shop"</span>
           </A>
-          <ul class="flex gap-4 mt-2 bg-pink-300">
-            {nav_items}
-          </ul>
+          <button
+              type="button"
+              on:click=move |_| toggle_menu()
+              class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-black focus:ring-2 focus:ring-gray-200 focus:outline-none"
+          >
+              <span class="sr-only">"Open main menu"</span>
+              <div class="w-6 h-6 text-zinc-400 fill-white">{Svg::HamburgerMenu}</div>
+          </button>
+          <div
+              class="w-full md:block md:w-auto"
+              class:hidden=move || !menu_open.get()
+              id="navbar-default"
+          >
+              <ul class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:font-medium md:bg-white md:border-0 dark:bg-gray-800 dark:border-gray-700 md:dark:bg-gray-900">
+                  {nav_items}
+              </ul>
+          </div>
         </div>
       </nav>
     }
@@ -87,7 +103,7 @@ fn Navbar() -> impl IntoView {
 #[component]
 fn Header() -> impl IntoView {
     view! {
-      <div class="">
+      <div>
         <Navbar/>
       </div>
     }
@@ -105,7 +121,7 @@ fn MainContainer(children: Children) -> impl IntoView {
 #[component]
 pub fn MainLayout(children: Children) -> impl IntoView {
     view! {
-      <div class="container mx-auto grid gap-5 overflow-y-auto">
+      <div class="container mx-auto flex flex-col gap-5 overflow-y-auto">
         <Header/>
         <MainContainer>{children()}</MainContainer>
       </div>

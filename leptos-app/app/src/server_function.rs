@@ -2,7 +2,7 @@
 use std::sync::Arc;
 
 use entity::{
-    chrono::NaiveDate,
+    chrono::{NaiveDate, ParseError},
     lists,
     prelude::*,
     sea_orm::{
@@ -34,11 +34,8 @@ pub async fn foo() -> Result<String, ServerFnError> {
 }
 
 #[server(AddList, "/api")]
-pub async fn add_list(
-    cx: Scope,
-    title: String,
-) -> Result<lists::Model, ServerFnError> {
-    let db = db(cx)?;
+pub async fn add_list(title: String) -> Result<lists::Model, ServerFnError> {
+    let db = db()?;
 
     let list = lists::ActiveModel::new(title)
         .insert(db.conn())
@@ -52,11 +49,8 @@ pub async fn add_list(
 }
 
 #[server(FindList, "/api")]
-pub async fn find_list(
-    cx: Scope,
-    list_id: uuid::Uuid,
-) -> Result<lists::Model, ServerFnError> {
-    let db = db(cx)?;
+pub async fn find_list(list_id: uuid::Uuid) -> Result<lists::Model, ServerFnError> {
+    let db = db()?;
 
     let list = lists::Entity::find_by_id(list_id)
         .one(db.conn())
@@ -71,11 +65,8 @@ pub async fn find_list(
 }
 
 #[server(DeleteList, "/api")]
-pub async fn delete_list(
-    cx: Scope,
-    list_id: uuid::Uuid,
-) -> Result<(), ServerFnError> {
-    let db = db(cx)?;
+pub async fn delete_list(list_id: uuid::Uuid) -> Result<(), ServerFnError> {
+    let db = db()?;
 
     let list = lists::Entity::find_by_id(list_id)
         .one(db.conn())
@@ -86,9 +77,10 @@ pub async fn delete_list(
         return Err(ServerFnError::ServerError("No list found".to_string()));
     }
 
-    list.unwrap().delete(db.conn()).await.map_err(|_| {
-        ServerFnError::ServerError("No list deleted".to_string())
-    })?;
+    list.unwrap()
+        .delete(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No list deleted".to_string()))?;
 
     Ok(())
 }
@@ -107,12 +99,11 @@ pub enum TodoOrderBy {
 
 #[server(ListTodos, "/api")]
 pub async fn list_todos(
-    cx: Scope,
     list_id: uuid::Uuid,
     search: Option<String>,
     order_by: Option<TodoOrderBy>,
 ) -> Result<Vec<todos::Model>, ServerFnError> {
-    let db = db(cx)?;
+    let db = db()?;
 
     let list = lists::Entity::find_by_id(list_id)
         .one(db.conn())
@@ -149,20 +140,21 @@ pub async fn list_todos(
 
 #[server(AddTodo, "/api")]
 pub async fn add_todo(
-    cx: Scope,
     list_id: uuid::Uuid,
     title: String,
     description: Option<String>,
     due_date: Option<String>,
 ) -> Result<(), ServerFnError> {
-    let db = db(cx)?;
+    let db = db()?;
 
     let due_date = due_date
         .and_then(|str| if str.is_empty() { None } else { Some(str) })
         .map(|string| {
             let naive_date = NaiveDate::parse_from_str(&string, "%Y-%m-%d")
                 .map_err(|op| ServerFnError::ServerError(format!("{}", op)))?;
-            Ok(naive_date)
+
+            // type annotation needed here
+            Ok::<NaiveDate, ServerFnError>(naive_date)
         })
         .transpose()?;
 
@@ -178,11 +170,8 @@ pub async fn add_todo(
 }
 
 #[server(DeleteTodo, "/api")]
-pub async fn delete_todo(
-    cx: Scope,
-    id: uuid::Uuid,
-) -> Result<(), ServerFnError> {
-    let db = db(cx)?;
+pub async fn delete_todo(id: uuid::Uuid) -> Result<(), ServerFnError> {
+    let db = db()?;
 
     let todo = todos::Entity::find_by_id(id)
         .one(db.conn())
@@ -190,28 +179,29 @@ pub async fn delete_todo(
         .map_err(|_| ServerFnError::ServerError("No todo found".to_string()))?
         .expect("should be unreachable #160");
 
-    todo.delete(db.conn()).await.map_err(|_| {
-        ServerFnError::ServerError("No todo deleted".to_string())
-    })?;
+    todo.delete(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No todo deleted".to_string()))?;
     Ok(())
 }
 
 #[server(EditTodo, "/api")]
 pub async fn edit_todo(
-    cx: Scope,
     id: uuid::Uuid,
     title: String,
     description: Option<String>,
     due_date: Option<String>,
 ) -> Result<(), ServerFnError> {
-    let db = db(cx)?;
+    let db = db()?;
 
     let due_date = due_date
         .and_then(|str| if str.is_empty() { None } else { Some(str) })
         .map(|string| {
             let naive_date = NaiveDate::parse_from_str(&string, "%Y-%m-%d")
                 .map_err(|op| ServerFnError::ServerError(format!("{}", op)))?;
-            Ok(naive_date)
+
+            // type annotation needed here
+            Ok::<NaiveDate, ServerFnError>(naive_date)
         })
         .transpose()?;
 
@@ -226,19 +216,17 @@ pub async fn edit_todo(
     updated.description = entity::sea_orm::Set(description);
     updated.due_date = entity::sea_orm::Set(due_date);
 
-    updated.update(db.conn()).await.map_err(|_| {
-        ServerFnError::ServerError("No to-do updated".to_string())
-    })?;
+    updated
+        .update(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No to-do updated".to_string()))?;
 
     Ok(())
 }
 
 #[server(ToggleTodo, "/api")]
-pub async fn toggle_todo(
-    cx: Scope,
-    id: uuid::Uuid,
-) -> Result<(), ServerFnError> {
-    let db = db(cx)?;
+pub async fn toggle_todo(id: uuid::Uuid) -> Result<(), ServerFnError> {
+    let db = db()?;
     let mut updated: todos::ActiveModel = todos::Entity::find_by_id(id)
         .one(db.conn())
         .await
@@ -248,9 +236,10 @@ pub async fn toggle_todo(
 
     updated.done = entity::sea_orm::Set(!updated.done.unwrap());
 
-    updated.update(db.conn()).await.map_err(|_| {
-        ServerFnError::ServerError("No to-do updated".to_string())
-    })?;
+    updated
+        .update(db.conn())
+        .await
+        .map_err(|_| ServerFnError::ServerError("No to-do updated".to_string()))?;
 
     Ok(())
 }

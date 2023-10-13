@@ -19,6 +19,6 @@
 
 @layer components {
   .btn {
-    @apply py-3 px-2.5 bg-zinc-400 text-white rounded-sm;
+    @apply py-3 px-2.5;
   }
 }

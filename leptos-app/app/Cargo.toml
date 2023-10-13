@@ -14,6 +14,7 @@ leptos_axum = { workspace = true, optional = true }
 leptos_dom.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
+leptos-use = { workspace = true, features = ["math", "serde", "storage"] }
 serde = { workspace = true, features = [
   "derive",
   "serde_derive",
@@ -24,6 +25,23 @@ thiserror.workspace = true
 tracing = { workspace = true, features = ["async-await", "log"] }
 
 cfg-if = "1.0.0"
+base64 = "0.21.4"
+convert_case = "0.6.0"
+rand = "=0.8.5"
+wasm-bindgen = "0.2.87"
+web-sys = { version = "0.3.64", features = [
+  "console",
+  "Document",
+  "DomRect",
+  "Element",
+  "Event",
+  "EventTarget",
+  "Storage",
+  "Window",
+] }
+js-sys = "0.3.64"
+serde_json = { version = "1.0.107", features = ["alloc"] }
+futures = "0.3.28"
 
 [features]
 default = ["ssr"]

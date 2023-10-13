@@ -1,2 +1,5 @@
+# Compiled files and executables
 /**/target
+
+# Env vars
 /**/.env

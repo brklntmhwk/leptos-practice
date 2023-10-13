@@ -6,7 +6,8 @@
     "leptos-app/app/Cargo.toml",
     "leptos-app/backend/Cargo.toml",
     "leptos-app/entity/Cargo.toml",
-    "leptos-app/frontend/Cargo.toml"
+    "leptos-app/frontend/Cargo.toml",
+    "leptos-app/migration/Cargo.toml"
   ],
   "lldb.verboseLogging": true,
   "lldb.launch.initCommands": [

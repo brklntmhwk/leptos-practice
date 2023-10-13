@@ -81,10 +81,10 @@ fn Navbar() -> impl IntoView {
           <button
               type="button"
               on:click=move |_| toggle_menu()
-              class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-black focus:ring-2 focus:ring-gray-200 focus:outline-none"
+              class="inline-flex items-center p-2 ml-3 text-sm rounded-lg md:hidden focus:ring-2 focus:ring-gray-200 focus:outline-none"
           >
               <span class="sr-only">"Open main menu"</span>
-              <div class="w-6 h-6 text-zinc-400 fill-white">{Svg::HamburgerMenu}</div>
+              <div class="w-6 h-6 stroke-zinc-800">{Svg::HamburgerMenu}</div>
           </button>
           <div
               class="w-full md:block md:w-auto"

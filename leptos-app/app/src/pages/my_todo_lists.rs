@@ -151,15 +151,13 @@ pub fn MyTodoListsPage() -> impl IntoView {
 
     view! {
         <MainLayout>
-            <h1>
-                "My To-Do Lists"
-            </h1>
+            <h1>"My To-Do Lists"</h1>
             <div class="overflow-x-auto relative rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
                 <div class="flex justify-between items-center p-2 border-b border-gray-200 md:border-none dark:border-gray-700">
                     <FormDrawerButton
                         action=add_list_action
                         title="Add List".to_string()
-                        icon=Svg::AddFile
+                        icon=Svg::AddSquare
                         fields=add_list_fields
                         class="border border-zinc-400 rounded-md"
                     />
@@ -183,7 +181,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
                                         <MultiActionForm action=delete_list_action>
                                             <input type="hidden" name="list_id" value=move || list.id.to_string()/>
                                             <Button class="border-none" button_type="submit">
-                                                <div class="w-5 h-5">{Svg::Logo}</div>
+                                                <div class="w-6 h-6 fill-black">{Svg::RubbishBin}</div>
                                             </Button>
                                         </MultiActionForm>
                                     </TableCell>

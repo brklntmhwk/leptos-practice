@@ -176,7 +176,7 @@ where
                 view! {
                     <div
                         id="drawer"
-                        class="overflow-y-auto fixed top-0 left-0 z-40 p-4 w-80 h-screen bg-white shadow-md -translate-x-full dark:bg-gray-800 animate-show"
+                        class="overflow-y-auto fixed top-0 left-0 z-40 p-4 w-80 h-screen bg-white animate-toggle"
                         tabindex="-1"
                         aria-labelledby="drawer-label"
                     >
@@ -216,7 +216,7 @@ where
                                     type="reset"
                                     onclick="form.requestSubmit()"
                                     on:click=move |_| set_drawer_open.set(false)
-                                    class="flex justify-center items-center py-2.5 px-5 mr-2 mb-2 w-full text-sm font-medium text-white bg-blue-700 rounded-lg dark:bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    class="flex justify-center items-center py-2.5 px-5 mr-2 mb-2 w-full text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
                                 >
                                     <div class="mr-2 w-5 h-5">{icon}</div>
                                     {title.clone()}
@@ -227,7 +227,7 @@ where
                 }.into_view()
             }
             false => {
-                view! { <div></div> }.into_view()
+                view! { <></> }.into_view()
             }
         }
     };
@@ -241,7 +241,7 @@ where
                 class:backdrop-blur-sm=drawer_open
             ></div>
             <Button class=class on:click=move |_| set_drawer_open.set(true)>
-                <div class="w-5 h-5">{icon}</div>
+                <div class="w-6 h-6">{icon}</div>
                 <span class="sr-only">{sr_title}</span>
             </Button>
             {drawer}

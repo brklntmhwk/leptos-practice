@@ -16,8 +16,8 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[cfg(feature = "ssr")]
-pub fn db() -> Result<Arc<entity::db::DB>, ServerFnError> {
-    use_context::<Arc<entity::db::DB>>()
+pub fn db() -> Result<entity::db::DB, ServerFnError> {
+    use_context::<entity::db::DB>()
         .ok_or("Pool missing.")
         .map_err(|e| ServerFnError::ServerError(e.to_string()))
 }

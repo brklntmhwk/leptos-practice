@@ -50,11 +50,7 @@ impl IntoView for ColumnHeader {
 }
 
 #[component]
-pub fn Table(
-    children: Children,
-    // column_headers: Vec<String>,
-    column_headers: Vec<ColumnHeader>,
-) -> impl IntoView {
+pub fn Table(children: Children, column_headers: Vec<ColumnHeader>) -> impl IntoView {
     view! {
         <table class="w-full text-left text-gray-500 table-fixed dark:text-gray-400">
             <thead class="hidden text-gray-700 uppercase bg-gray-50 md:table-header-group dark:text-gray-400 dark:bg-gray-700">

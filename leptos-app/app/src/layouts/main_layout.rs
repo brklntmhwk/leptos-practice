@@ -76,7 +76,7 @@ fn Navbar() -> impl IntoView {
             <div class="h-8 w-8">
               {Svg::Logo}
             </div>
-            <span class="text-base md:text-lg xl:text-xl font-semibold">"Rental DVD Shop"</span>
+            <span class="text-base md:text-lg xl:text-xl font-semibold">"Todo App"</span>
           </A>
           <button
               type="button"
@@ -84,14 +84,14 @@ fn Navbar() -> impl IntoView {
               class="inline-flex items-center p-2 ml-3 text-sm rounded-lg md:hidden focus:ring-2 focus:ring-gray-200 focus:outline-none"
           >
               <span class="sr-only">"Open main menu"</span>
-              <div class="w-6 h-6 stroke-zinc-800">{Svg::HamburgerMenu}</div>
+              <div class="w-6 h-6 fill-zinc-600">{Svg::HamburgerMenu}</div>
           </button>
           <div
               class="w-full md:block md:w-auto"
               class:hidden=move || !menu_open.get()
               id="navbar-default"
           >
-              <ul class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:font-medium md:bg-white md:border-0 dark:bg-gray-800 dark:border-gray-700 md:dark:bg-gray-900">
+              <ul class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:font-medium md:bg-white md:border-0">
                   {nav_items}
               </ul>
           </div>

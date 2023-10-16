@@ -151,7 +151,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
 
     view! {
         <MainLayout>
-            <h1>"My To-Do Lists"</h1>
+            <h1>"My Todo Lists"</h1>
             <div class="overflow-x-auto relative rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
                 <div class="flex justify-between items-center p-2 border-b border-gray-200 md:border-none dark:border-gray-700">
                     <FormDrawerButton
@@ -159,7 +159,8 @@ pub fn MyTodoListsPage() -> impl IntoView {
                         title="Add List".to_string()
                         icon=Svg::AddSquare
                         fields=add_list_fields
-                        class="border border-zinc-400 rounded-md"
+                        button_class="border border-zinc-400 rounded-md"
+                        icon_class="w-6 h-6 fill-zinc-400"
                     />
                 </div>
                 <Table column_headers=column_headers>
@@ -171,7 +172,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
                         key=|list| list.id
                         children=move |list: entity::lists::Model| {
                             view! {
-                                <TableRow class="border-b">
+                                <TableRow class="border-b cursor-pointer">
                                     <TableCell on:click=move |_| {
                                         set_href(format!("/todo/{}", list.id));
                                     }>
@@ -181,7 +182,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
                                         <MultiActionForm action=delete_list_action>
                                             <input type="hidden" name="list_id" value=move || list.id.to_string()/>
                                             <Button class="border-none" button_type="submit">
-                                                <div class="w-6 h-6 fill-black">{Svg::RubbishBin}</div>
+                                                <div class="w-6 h-6 fill-zinc-700">{Svg::RubbishBin}</div>
                                             </Button>
                                         </MultiActionForm>
                                     </TableCell>

@@ -5,7 +5,7 @@ use std::{
     hash::{Hash, Hasher},
 };
 
-use chrono::NaiveDate;
+// use chrono::{NaiveDate, NaiveDateTime};
 use sea_orm::{entity::prelude::*, Condition, Set};
 use serde::{Deserialize, Serialize};
 
@@ -18,10 +18,14 @@ pub struct Model {
     pub title: String,
     pub description: Option<String>,
     pub done: bool,
-    pub due_date: Option<NaiveDate>,
-    pub created_at: DateTimeUtc,
-    pub updated_at: DateTimeUtc,
+    pub due_date: Option<Date>,
+    pub created_at: DateTime,
+    pub updated_at: DateTime,
+    // pub created_at: DateTimeUtc,
+    // pub updated_at: DateTimeUtc,
 }
+
+// Rust type `Option<chrono::datetime::DateTime<chrono::offset::utc::Utc>>` (as SQL type `TIMESTAMPTZ`) is not compatible with SQL type `TIMESTAMP`
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
@@ -58,8 +62,8 @@ impl Default for Model {
             description: None,
             done: false,
             due_date: None,
-            created_at: chrono::Utc::now(),
-            updated_at: chrono::Utc::now(),
+            created_at: chrono::Utc::now().naive_local(),
+            updated_at: chrono::Utc::now().naive_local(),
         }
     }
 }
@@ -80,8 +84,8 @@ impl ActiveModel {
             description: Set(description),
             due_date: Set(due_date),
             done: Set(false),
-            created_at: Set(chrono::Utc::now()),
-            updated_at: Set(chrono::Utc::now()),
+            created_at: Set(chrono::Utc::now().naive_local()),
+            updated_at: Set(chrono::Utc::now().naive_local()),
         }
     }
 }

@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 use std::{cell::RefCell, rc::Rc, sync::Arc};
 
 use entity::{
@@ -100,16 +101,17 @@ fn TodoRow(
             </TableCell>
             <TableCell class="grid order-3 grid-cols-1 col-span-2 col-end-12 grid-rows-2 row-span-3 row-start-1 gap-6 justify-items-center justify-self-end self-center p-4 pointer-events-auto md:flex-row md:grid-cols-2 md:grid-rows-1 md:px-2">
                 <FormDrawerButton
-                    class="border-none"
+                    button_class="border-none"
+                    icon_class="w-6 h-6 fill-zinc-400"
                     action=edit_todo
                     title="Edit To-Do".to_string()
-                    icon=Svg::Logo
+                    icon=Svg::Edit
                     fields=edit_todo_fields
                 />
                 <ActionForm action=delete_todo>
                     <input type="hidden" name="id" value=move || todo.id.to_string()/>
                     <Button class="border-none" button_type="submit">
-                        <div class="w-5 h-5">{Svg::Logo}</div>
+                        <div class="w-6 h-6">{Svg::RubbishBin}</div>
                     </Button>
                 </ActionForm>
             </TableCell>
@@ -161,8 +163,10 @@ fn AddTodoDrawer(
         <FormDrawerButton
             action=add_todo
             title="Add Todo".to_string()
-            icon=Svg::Logo
+            icon=Svg::AddSquare
             fields=add_todo_fields
+            button_class=""
+            icon_class="w-8 h-8 fill-zinc-600"
         />
     }
 }
@@ -290,12 +294,12 @@ fn TodoList(list_id: uuid::Uuid) -> impl IntoView {
                             "Search"
                         </label>
                         <div class="absolute left-0 top-2 items-center pl-3 text-gray-400 pointer-events-none">
-                            <div class="w-5 h-5">{Svg::Logo}</div>
+                            <div class="w-6 h-6 fill-zinc-600 stroke-zinc-400">{Svg::MagnifyingGlass}</div>
                         </div>
                         <input
                             type="text"
                             id="table-search"
-                            class="block p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:placeholder-gray-400 dark:text-white dark:bg-gray-700 dark:border-gray-600 focus:border-orange-500 focus:ring-orange-500 min-w-[7em]"
+                            class="block p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 dark:placeholder-gray-400 dark:text-white dark:bg-gray-700 dark:border-gray-600 focus:border-orange-500 focus:ring-orange-500 min-w-[7em]"
                             placeholder="Search"
                             on:input=move |ev| {
                                 set_search.set(event_target_value(&ev));
@@ -304,14 +308,14 @@ fn TodoList(list_id: uuid::Uuid) -> impl IntoView {
                         />
                     </div>
                     <div class="relative">
-                      <div class="absolute top-3.5 left-2 text-zinc-400 h-5 w-5">
+                      <div class="absolute top-3.5 left-2 text-zinc-400 fill-zinc-600 stroke-zinc-400 h-6 w-6">
                         {Svg::MagnifyingGlass}
                       </div>
                       <input
-                          id="film-search"
+                          id="search"
                           type="text"
                           name="search"
-                          placeholder="Search films..."
+                          placeholder="Search todos.."
                           class="rounded-sm py-3 pl-9 border border-zinc-300 bg-zinc-100 text-zinc-700 focus:outline focus:outline-offset-2 focus:outline-blue-300 w-full appearance-none"
                           on:input=move |e| {
                             set_search.set(event_target_value(&e));

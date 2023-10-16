@@ -73,6 +73,7 @@ async fn main() {
     let db = DB::connect(&db_conf).await.unwrap();
     db.run_migrations().await.unwrap();
 
+    // Arc::new(AppState { leptos_options, db: db.clone()}) ???
     let app_state = AppState {
         leptos_options,
         db: db.clone(),

@@ -26,3 +26,4 @@ tailwindcss -i style/input.css -o style/output.css --watch
 ## Reference
 - [SeaORM/docs/next/migration/setting-up-migration/](https://www.sea-ql.org/SeaORM/docs/next/migration/setting-up-migration/)
 - [vault81/todo-vault](https://github.com/vault81/todo-vault)
+- [Module sqlx_postgres::types](https://docs.rs/sqlx-postgres/0.7.2/sqlx_postgres/types/index.html)

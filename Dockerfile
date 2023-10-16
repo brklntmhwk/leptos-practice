@@ -76,6 +76,12 @@ RUN cargo build --release --target x86_64-unknown-linux-musl --bin $BIN_TARGET
 ############################################################################
 FROM debian:bullseye-slim AS runtime
 
+# Set env vars used inside a container
+ENV LC_ALL="en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US:en" \
+    TZ="JST-9" \
+
 # Declare args to use at this stage
 ARG USERNAME
 ARG USER_ID
@@ -128,7 +134,7 @@ RUN set -x \
 # Change the ownership of Cargo registry to the non-root user
 RUN chown -R $USERNAME:$USERNAME /usr/local/cargo/registry
 
-# Install standalone TailwindCSS CLI, give a permission to execute it
+# Install standalone TailwindCSS CLI, give a permission to execute it to the non-root user
 RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
     && chmod a+x tailwindcss-linux-x64 \
     && mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss

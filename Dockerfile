@@ -80,7 +80,7 @@ FROM debian:bullseye-slim AS runtime
 ENV LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US:en" \
-    TZ="JST-9" \
+    TZ="JST-9"
 
 # Declare args to use at this stage
 ARG USERNAME

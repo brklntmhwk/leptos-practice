@@ -33,9 +33,12 @@ web-sys = { version = "0.3.64", features = [
   "console",
   "Document",
   "DomRect",
+  "DragEvent",
   "Element",
   "Event",
   "EventTarget",
+  "HtmlElement",
+  "HtmlDivElement",
   "Storage",
   "Window",
 ] }

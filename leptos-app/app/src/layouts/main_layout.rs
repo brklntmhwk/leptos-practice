@@ -91,8 +91,9 @@ fn Navbar() -> impl IntoView {
               class:hidden=move || !menu_open.get()
               id="navbar-default"
           >
-              <ul class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:font-medium md:bg-white md:border-0">
+              <ul class="flex flex-col p-4 mt-4 bg-zinc-100 rounded-md border border-gray-200 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:bg-transparent md:font-medium md:border-0">
                   {nav_items}
+                  <li><ThemeSwitch/></li>
               </ul>
           </div>
         </div>

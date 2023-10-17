@@ -159,8 +159,8 @@ pub fn MyTodoListsPage() -> impl IntoView {
                         title="Add List".to_string()
                         icon=Svg::AddSquare
                         fields=add_list_fields
-                        button_class="border border-zinc-400 rounded-md"
-                        icon_class="w-6 h-6 fill-zinc-400"
+                        button_class=""
+                        icon_class="w-8 h-8 md:w-10 md:h-10 fill-zinc-600"
                     />
                 </div>
                 <Table column_headers=column_headers>

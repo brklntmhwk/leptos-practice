@@ -102,7 +102,7 @@ fn TodoRow(
             <TableCell class="grid order-3 grid-cols-1 col-span-2 col-end-12 grid-rows-2 row-span-3 row-start-1 gap-6 justify-items-center justify-self-end self-center p-4 pointer-events-auto md:flex-row md:grid-cols-2 md:grid-rows-1 md:px-2">
                 <FormDrawerButton
                     button_class="border-none"
-                    icon_class="w-6 h-6 fill-zinc-400"
+                    icon_class="w-6 h-6 stroke-zinc-800 fill-zinc-800"
                     action=edit_todo
                     title="Edit To-Do".to_string()
                     icon=Svg::Edit
@@ -111,7 +111,7 @@ fn TodoRow(
                 <ActionForm action=delete_todo>
                     <input type="hidden" name="id" value=move || todo.id.to_string()/>
                     <Button class="border-none" button_type="submit">
-                        <div class="w-6 h-6">{Svg::RubbishBin}</div>
+                        <div class="w-6 h-6 stroke-zinc-800">{Svg::RubbishBin}</div>
                     </Button>
                 </ActionForm>
             </TableCell>
@@ -166,7 +166,7 @@ fn AddTodoDrawer(
             icon=Svg::AddSquare
             fields=add_todo_fields
             button_class=""
-            icon_class="w-8 h-8 fill-zinc-600"
+            icon_class="w-8 h-8 md:w-10 md:h-10 fill-zinc-600"
         />
     }
 }

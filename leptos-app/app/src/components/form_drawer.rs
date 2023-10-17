@@ -217,7 +217,7 @@ where
                                     type="reset"
                                     onclick="form.requestSubmit()"
                                     on:click=move |_| set_drawer_open.set(false)
-                                    class="flex justify-center items-center py-2.5 px-5 mr-2 mb-2 w-full text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                                    class="flex justify-center items-center py-2.5 px-5 mr-2 mb-2 w-full text-sm font-medium text-white bg-zinc-400 rounded-lg hover:bg-zinc-500 focus:ring-4 focus:ring-zinc-300 focus:outline-none"
                                 >
                                     <div class="mr-2 w-5 h-5">{icon}</div>
                                     {title.clone()}

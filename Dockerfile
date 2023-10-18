@@ -77,7 +77,8 @@ RUN cargo build --release --target x86_64-unknown-linux-musl --bin $BIN_TARGET
 FROM debian:bullseye-slim AS runtime
 
 # Set env vars used inside a container
-ENV LANG="en_US.UTF-8" \
+ENV LC_ALL = "en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
     LANGUAGE="en_US:en" \
     TZ="JST-9"
 
@@ -106,6 +107,7 @@ RUN apt-get update \
         ca-certificates \
         curl \
         git \
+        locales-all \
         libssl-dev \
         pkg-config \
         postgresql \

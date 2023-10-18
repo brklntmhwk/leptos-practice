@@ -93,7 +93,7 @@ fn Navbar() -> impl IntoView {
           >
               <ul class="flex flex-col p-4 mt-4 bg-zinc-100 rounded-md border border-gray-200 md:flex-row md:mt-0 md:space-x-8 md:text-sm md:bg-transparent md:font-medium md:border-0">
                   {nav_items}
-                  <li><ThemeSwitch/></li>
+                  // <li><ThemeSwitch/></li>
               </ul>
           </div>
         </div>

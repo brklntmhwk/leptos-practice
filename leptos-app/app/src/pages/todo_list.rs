@@ -10,6 +10,7 @@ use js_sys::Function;
 use leptos::{ev::MouseEvent, *};
 use leptos_dom::*;
 use leptos_router::*;
+use leptos_use::{storage::use_local_storage, use_event_listener, use_window};
 use wasm_bindgen::{prelude::*, JsCast};
 use web_sys::{Document, DomRect, Element, Event, EventTarget, Window};
 

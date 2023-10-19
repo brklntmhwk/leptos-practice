@@ -30,6 +30,7 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Title text="Leptos Practice"/>
+        <Meta name="description" content="A playground for Leptos"/>
         <Link rel="shortcut icon" type_="image/ico" href="/favicon.ico"/>
         <Stylesheet id="leptos" href="/pkg/leptos-app.css"/>
         <Router>
@@ -42,6 +43,8 @@ pub fn App() -> impl IntoView {
                     <Route path="/" view=Home/>
                     <Route path="/todo" view=MyTodoListsPage/>
                     <Route path="/todo/:list_id" view=TodoListPage/>
+                    <Route path="/api-playground" view=APIPlayground/>
+                    // <Route path="/*any" view=NotFound/>
                 </Routes>
             </ErrorBoundary>
         </Router>

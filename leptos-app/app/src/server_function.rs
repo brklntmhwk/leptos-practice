@@ -12,7 +12,9 @@ use entity::{
     todos, uuid,
 };
 use leptos::*;
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
+use serde_json;
 use thiserror::Error;
 
 #[cfg(feature = "ssr")]
@@ -242,4 +244,32 @@ pub async fn toggle_todo(id: uuid::Uuid) -> Result<(), ServerFnError> {
         .map_err(|_| ServerFnError::ServerError("No to-do updated".to_string()))?;
 
     Ok(())
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Post {
+    #[serde(rename = "camelCase")]
+    pub user_id: i32,
+    pub id: i32,
+    pub title: String,
+    pub body: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct JsonPlaceholderResponse {
+    pub status: u32,
+    pub results: Vec<Post>,
+}
+
+#[server(FetchPosts, "/api")]
+pub async fn fetch_posts() -> Result<Vec<Post>, ServerFnError> {
+    let res = Client::new()
+        .get("https://jsonplaceholder.typicode.com/posts")
+        // .query(&[("userId", 1)])
+        .send()
+        .await
+        .map_err(|_| ServerFnError::ServerError("No to-do found".to_string()))?;
+    let body = res.json::<JsonPlaceholderResponse>().await?;
+
+    Ok(body.results)
 }

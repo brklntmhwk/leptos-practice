@@ -9,6 +9,12 @@
     "leptos-app/frontend/Cargo.toml",
     "leptos-app/migration/Cargo.toml"
   ],
+  "rust-analyzer.procMacro.ignored": {
+    "leptos_macro": [
+      "server",
+      "component"
+    ],
+  },
   "lldb.verboseLogging": true,
   "lldb.launch.initCommands": [
     "settings set target.disable-aslr false"

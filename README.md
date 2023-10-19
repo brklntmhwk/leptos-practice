@@ -2,7 +2,11 @@
 This repo walks you through a bunch of both client-side and server-side features Leptos provides, such as signals, resources, and server functions.
 
 ## Tips
+These are some notes of what I've learnt through tinkering with this app.
 ### Leptos
+- Leptos is a web frontend framework that is reactive primitive with signals like SolidJS
+- Instead of using virtual DOM, it works with real DOM nodes and can observe and detect partial changes made inside a structure by signal
+- This makes rendering to occur as less frequently as possible
 #### SSR + Hydration
 - In the SSR mode, `cargo-leptos` helps coordinate the build process that requires two separate binaries: one compiled to native code and running the server, and the other compiled to WASM and running in the browser.
   - In my project `leptos-app`, they are `backend` and `frontend`, respectively.
@@ -30,7 +34,54 @@ This repo walks you through a bunch of both client-side and server-side features
   - Instead of reloading the full page, the WASM version of your app will load the new page right there in the browser, without requesting it from the server
   - Essentially, your app upgrades itself from a server-loaded "multi-page app" into a browser-rendered "single-page app."
     - This has the best of both worlds: **a fast initial load time thanks to SSR, and fast secondary navigations thanks to the client-side routing**
+#### Reactivity
+- `create_signal` is similar to `useState` in React, and almost equivalent to `createSignal` in SolidJS
+- `create_effect` is almost equivalent to `useEffect` in React, but there's a difference;
+  - It doesn't take that dependency array
+    - Leptos automatically tracks deps knowing which signals are accessed within the effect so you don't have to explictly add it
+      - For example, if `use_last` is `true`, the effect will rerun whenever `first`, `last`, or `use_last`changes in this case
+      - but if not, only will `first` be the tracking target
+      ```rs
+      let (first, set_first) = create_signal(String::new());
+      let (last, set_last) = create_signal(String::new());
+      let (use_last, set_use_last) = create_signal(true);
 
+      create_effect(move |_| {
+          log(
+              if use_last.get() {
+                  format!("{} {}", first.get(), last.get())
+              } else {
+                  first.get()
+              },
+          )
+      });
+      ```
+#### Async
+- `create_resource` allows you to integrate async into the sync reactive system
+  - The word "resource" points to reactive data structure in this context
+  - It lets the `Future` into a signal that returns `Some(T)` if it's resolved, and `None` if it's still pending, rather than waiting for its data to be loaded with `.async`
+  - Just like `useSWR` or `useSWRInfinite` in swr, a React hooks library, it takes a source signal as its first arg, and a fetcher as its second one
+  ```rs
+  let (count, set_count) = create_signal(0);
+
+  let async_data = create_resource(
+      count, // a source signal
+      |value| async move {
+          logging::log!("loading data from API");
+          load_data(value).await
+      }, // a fetcher (every time `count` changes, this will run)
+  );
+  ```
+  - To create a resource that runs only once, you can pass a non-reactive, empty source signal:
+  ```rs
+  let once = create_resource(|| (), |_| async move { load_data().await });
+  ```
+- Both `<Suspense>` and `<Transition>` take resource elements as their children, observing the status of them loading
+  - If resources are still loading, the fallback component is displayed instead
+- The difference between `<Suspense>` and `<Transition>` is the former one causes flickering every time the data reloaded whereas the latter one only shows the fallback the first time
+- `<Async>` is the no fallback version of `<Suspense>` that helps omit a bit of boilerplates
+- Compared to `create_resource`, `create_action` is more suitable for a situation where an async function needs to run in response to a user's action such as clicking a button
+  - e.g., `create_action` for `add_todo`, `create_resource` for `list_todos`,
 
 ### sea-orm-cli
 - When you want to start database configurations from scratch, execute this command:

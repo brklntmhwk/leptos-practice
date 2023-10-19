@@ -10,7 +10,7 @@ use js_sys::Function;
 use leptos::{ev::MouseEvent, *};
 use leptos_dom::*;
 use leptos_router::*;
-use leptos_use::{storage::use_local_storage, use_event_listener, use_window};
+// use leptos_use::{storage::use_local_storage, use_event_listener, use_window};
 use wasm_bindgen::{prelude::*, JsCast};
 use web_sys::{Document, DomRect, Element, Event, EventTarget, Window};
 
@@ -103,7 +103,7 @@ fn TodoRow(
             <TableCell class="grid order-3 grid-cols-1 col-span-2 col-end-12 grid-rows-2 row-span-3 row-start-1 gap-6 justify-items-center justify-self-end self-center p-4 pointer-events-auto md:flex-row md:grid-cols-2 md:grid-rows-1 md:px-2">
                 <FormDrawerButton
                     button_class="border-none"
-                    icon_class="w-6 h-6 stroke-zinc-800 fill-zinc-800"
+                    icon_class="w-5 h-5 stroke-zinc-800 fill-zinc-800"
                     action=edit_todo
                     title="Edit To-Do".to_string()
                     icon=Svg::Edit
@@ -112,7 +112,7 @@ fn TodoRow(
                 <ActionForm action=delete_todo>
                     <input type="hidden" name="id" value=move || todo.id.to_string()/>
                     <Button class="border-none" button_type="submit">
-                        <div class="w-6 h-6 stroke-zinc-800">{Svg::RubbishBin}</div>
+                        <div class="w-5 h-5 stroke-zinc-800">{Svg::RubbishBin}</div>
                     </Button>
                 </ActionForm>
             </TableCell>

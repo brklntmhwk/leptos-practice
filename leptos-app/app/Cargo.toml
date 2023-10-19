@@ -14,7 +14,13 @@ leptos_axum = { workspace = true, optional = true }
 leptos_dom.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
-leptos-use.workspace = true
+leptos_query.workspace = true
+leptos-use = { workspace = true, features = [
+  "math",
+  "serde",
+  "ssr",
+  "storage",
+] }
 serde = { workspace = true, features = [
   "derive",
   "serde_derive",
@@ -33,6 +39,7 @@ web-sys = "0.3.64"
 js-sys = "0.3.64"
 serde_json = { version = "1.0.107", features = ["alloc"] }
 futures = "0.3.28"
+reqwest = { version = "0.11.22", features = ["json"] }
 
 [features]
 default = ["ssr"]
@@ -40,12 +47,14 @@ hydrate = [
   "entity/client-side",
   "leptos/hydrate",
   "leptos_meta/hydrate",
+  "leptos_query/hydrate",
   "leptos_router/hydrate",
 ]
 ssr = [
   "entity/server-side",
   "leptos/ssr",
   "leptos_meta/ssr",
+  "leptos_query/ssr",
   "leptos_router/ssr",
   "leptos-use/ssr",
   "dep:leptos_axum",

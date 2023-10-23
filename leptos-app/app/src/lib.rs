@@ -43,7 +43,7 @@ pub fn App() -> impl IntoView {
                     <Route path="/" view=Home/>
                     <Route path="/todo" view=MyTodoListsPage/>
                     <Route path="/todo/:list_id" view=TodoListPage/>
-                    <Route path="/api-playground" view=APIPlayground/>
+                    <Route path="/web-api" view=WebAPI/>
                     // <Route path="/*any" view=NotFound/>
                 </Routes>
             </ErrorBoundary>

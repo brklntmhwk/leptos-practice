@@ -3,6 +3,7 @@ use leptos::*;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Svg {
     AddSquare,
+    ArrowUturnLeft,
     Edit,
     HamburgerMenu,
     Logo,
@@ -15,6 +16,7 @@ impl IntoView for Svg {
         view! {
             <div inner_html=match self {
                 Svg::AddSquare => include_str!("../../../style/inline-svg/add-square.svg"),
+                Svg::ArrowUturnLeft => include_str!("../../../style/inline-svg/arrow-uturn-left.svg"),
                 Svg::Edit => include_str!("../../../style/inline-svg/edit.svg"),
                 Svg::HamburgerMenu => include_str!("../../../style/inline-svg/hamburger-menu.svg"),
                 Svg::Logo => include_str!("../../../style/inline-svg/postgres_elephant.svg"),

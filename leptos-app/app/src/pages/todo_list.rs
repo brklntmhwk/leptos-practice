@@ -365,6 +365,12 @@ pub fn TodoListPage() -> impl IntoView {
     view! {
         <MainLayout>
             <TodoList list_id=list_id()/>
+            <A href="/todo" class="flex gap-3 items-center">
+            <div class="h-5 w-5">
+              {Svg::ArrowUturnLeft}
+            </div>
+            <span class="text-base md:text-lg font-semibold">"Back To Todo page"</span>
+          </A>
         </MainLayout>
     }
 }

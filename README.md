@@ -10,10 +10,12 @@ These are some notes of what I've learnt through tinkering with this app.
 #### SSR + Hydration
 - In the SSR mode, `cargo-leptos` helps coordinate the build process that requires two separate binaries: one compiled to native code and running the server, and the other compiled to WASM and running in the browser.
   - In my project `leptos-app`, they are `backend` and `frontend`, respectively.
-  - It's a build tool that
+  - It's a build tool that enables parallel building of server and client in watch mode
+    - Execute this command to start watching: `cargo leptos watch`
   - It's not necessary, but eases the complexity of handling multiple binaries at one hand to a greater extent by giving you some special features:
     - Recompiling both the server and client upon changes made
     - Build-in support for TailwindCSS, SASS, and testing
+    - Optimization of the WASM with wasm-opt
   - I'm a big fan of TailwindCSS and the auto recompiling feature sounds fascinating to me, so I decided to use it.
 - In leptos, page loading works in these orders:
   - 1. The browser makes a GET request for the current URL to the server
@@ -76,12 +78,14 @@ These are some notes of what I've learnt through tinkering with this app.
   ```rs
   let once = create_resource(|| (), |_| async move { load_data().await });
   ```
+- Compared to `create_resource`, `create_action` is more suitable for a situation where an async function needs to run in response to a user's action such as clicking a button
+  - e.g., `create_action` for `add_todo`, `create_resource` for `list_todos`
+- Unlike `create_resource`, `create_local_resource` handles local resources that don't load on the server but in the browser
+  - Since the `Future` that a fetcher will generate runs only on the local system, its data type doesn't need to be serializable
 - Both `<Suspense>` and `<Transition>` take resource elements as their children, observing the status of them loading
   - If resources are still loading, the fallback component is displayed instead
 - The difference between `<Suspense>` and `<Transition>` is the former one causes flickering every time the data reloaded whereas the latter one only shows the fallback the first time
 - `<Async>` is the no fallback version of `<Suspense>` that helps omit a bit of boilerplates
-- Compared to `create_resource`, `create_action` is more suitable for a situation where an async function needs to run in response to a user's action such as clicking a button
-  - e.g., `create_action` for `add_todo`, `create_resource` for `list_todos`,
 
 ### sea-orm-cli
 - When you want to start database configurations from scratch, execute this command:
@@ -102,7 +106,7 @@ sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/postg
 ```
 tailwindcss -i style/input.css -o style/output.css --watch
 ```
-  - In the `--watch` mode, changes will be reflected as soon as you've done so in `style/input.css`
+  - In the `--watch` mode, changes will be reflected soon after you've made in `style/input.css`
 
 ## Reference
 - [Leptos Guide](https://leptos-rs.github.io/leptos/01_introduction.html)
@@ -110,3 +114,6 @@ tailwindcss -i style/input.css -o style/output.css --watch
 - [SeaORM/docs/next/migration/setting-up-migration/](https://www.sea-ql.org/SeaORM/docs/next/migration/setting-up-migration/)
 - [vault81/todo-vault](https://github.com/vault81/todo-vault)
 - [Module sqlx_postgres::types](https://docs.rs/sqlx-postgres/0.7.2/sqlx_postgres/types/index.html)
+- [JSON Placeholder](https://jsonplaceholder.typicode.com/)
+- [Material Tailwind Tabs](https://www.material-tailwind.com/docs/html/tabs)
+- [How to generate a vec of enum options in Rust [duplicate]](https://stackoverflow.com/questions/68427115/how-to-generate-a-vec-of-enum-options-in-rust)

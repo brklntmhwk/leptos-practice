@@ -152,6 +152,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
     view! {
         <MainLayout>
             <h1>"My Todo Lists"</h1>
+            <p>"These are fetched from database powered by PostgreSQL, and the connection supported by SeaORM."</p>
             <div class="overflow-x-auto relative rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
                 <div class="flex justify-between items-center p-2 border-b border-gray-200 md:border-none dark:border-gray-700">
                     <FormDrawerButton

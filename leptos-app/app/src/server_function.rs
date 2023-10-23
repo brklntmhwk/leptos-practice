@@ -246,30 +246,25 @@ pub async fn toggle_todo(id: uuid::Uuid) -> Result<(), ServerFnError> {
     Ok(())
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Post {
-    #[serde(rename = "camelCase")]
-    pub user_id: i32,
-    pub id: i32,
-    pub title: String,
-    pub body: String,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Post {
+//     pub user_id: u32,
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct JsonPlaceholderResponse {
-    pub status: u32,
-    pub results: Vec<Post>,
-}
+//     pub id: u32,
+//     pub title: String,
+//     pub body: String,
+// }
 
-#[server(FetchPosts, "/api")]
-pub async fn fetch_posts() -> Result<Vec<Post>, ServerFnError> {
-    let res = Client::new()
-        .get("https://jsonplaceholder.typicode.com/posts")
-        // .query(&[("userId", 1)])
-        .send()
-        .await
-        .map_err(|_| ServerFnError::ServerError("No to-do found".to_string()))?;
-    let body = res.json::<JsonPlaceholderResponse>().await?;
+// #[server(FetchPosts, "/api")]
+// pub async fn fetch_posts() -> Result<Vec<Post>, ServerFnError> {
+//     let res = Client::new()
+//         .get("https://jsonplaceholder.typicode.com/posts?_start=0&_end=10")
+//         .query(&[("userId", 1)])
+//         .send()
+//         .await
+//         .map_err(|_| ServerFnError::ServerError("No posts found".to_string()))?;
+//     let body = res.json::<Vec<Post>>().await?;
 
-    Ok(body.results)
-}
+//     Ok(body)
+// }

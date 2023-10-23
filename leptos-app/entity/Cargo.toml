@@ -13,6 +13,7 @@ path = "src/lib.rs"
 [dependencies]
 migration = { path = "../migration", optional = true }
 
+derive_more.workspace = true
 serde = { workspace = true, features = [
   "derive",
   "serde_derive",
@@ -30,7 +31,6 @@ figment = { version = "0.10.10", features = [
   "env",
   "yaml",
 ], optional = true }
-derive_more = "0.99.17"
 uuid = { version = "1.4.1", features = ["v4", "v7"] }
 
 [dependencies.sea-orm]

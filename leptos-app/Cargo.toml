@@ -17,6 +17,7 @@ opt-level = 'z'
 strip = true      # Strip unnecessary info away to reduce the binary size
 
 [workspace.dependencies]
+derive_more = "0.99.17"
 http = "0.2.9"
 leptos = { version = "0.5.0", default-features = false, features = ["serde"] }
 leptos_axum = { version = "0.5.0" }

@@ -134,6 +134,7 @@ checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "base64",
  "cfg-if",
  "convert_case 0.6.0",
@@ -143,6 +144,7 @@ dependencies = [
  "http",
  "js-sys",
  "leptos",
+ "leptos-struct-table",
  "leptos-use",
  "leptos_axum",
  "leptos_dom",
@@ -273,7 +275,7 @@ dependencies = [
  "futures-core",
  "futures-io",
  "futures-lite",
- "gloo-timers",
+ "gloo-timers 0.2.6",
  "kv-log-macro",
  "log",
  "memchr",
@@ -314,9 +316,9 @@ checksum = "b9441c6b2fe128a7c2bf680a44c34d0df31ce09e5b7e401fcca3faa483dbc921"
 
 [[package]]
 name = "async-trait"
-version = "0.1.73"
+version = "0.1.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc00ceb34980c03614e35a3a4e218276a0a824e911d07651cd0d858a51e8c0f0"
+checksum = "a66537f1bb974b254c98ed142ff995236e81b9d0fe4db0575f46612cb15eb0f9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -637,6 +639,7 @@ dependencies = [
  "bytecheck_derive",
  "ptr_meta",
  "simdutf8",
+ "uuid",
 ]
 
 [[package]]
@@ -1493,6 +1496,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "gloo-timers"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbb143cf96099802033e0d4f4963b19fd2e0b728bcf076cd9cf7f6634f092994"
+dependencies = [
+ "futures-channel",
+ "futures-core",
+ "js-sys",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "gloo-utils"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1898,13 +1913,41 @@ dependencies = [
 ]
 
 [[package]]
-name = "leptos-use"
-version = "0.7.1"
+name = "leptos-struct-table"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61661080c14e4eaad66ccced97057818944ae577a2bf726338e84cd6ca42eb3d"
+checksum = "6cea6e6d6813dbb101d8ace0d382b305373f9bd422b3f2b500a3036c710e4852"
+dependencies = [
+ "async-trait",
+ "leptos",
+ "leptos-struct-table-macro",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
+name = "leptos-struct-table-macro"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "697a24dfdc49b4b706687e07037f4d12b35c3c0ac3104fedb5dc82f662987c7f"
+dependencies = [
+ "darling 0.20.3",
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.38",
+]
+
+[[package]]
+name = "leptos-use"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37b8bdd97df1959be939471fc0289eedaf6efc52f6bd0109099837b9ac4e5d94"
 dependencies = [
  "cfg-if",
  "default-struct-builder",
+ "futures-util",
+ "gloo-timers 0.3.0",
  "js-sys",
  "lazy_static",
  "leptos",
@@ -1913,6 +1956,7 @@ dependencies = [
  "serde",
  "serde_json",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "web-sys",
 ]
 
@@ -2058,7 +2102,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "66071614752de947770824578b126f78b7f87436a1fccd71ef9545e7f95d4f94"
 dependencies = [
  "cfg-if",
- "gloo-timers",
+ "gloo-timers 0.2.6",
  "js-sys",
  "leptos",
  "tokio",
@@ -2076,6 +2120,7 @@ dependencies = [
  "indexmap 2.0.2",
  "js-sys",
  "pin-project",
+ "rkyv",
  "rustc-hash",
  "self_cell",
  "serde",

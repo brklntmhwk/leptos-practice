@@ -19,7 +19,7 @@ pub fn TableCell(
 pub fn TableRow(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
     view! {
         <tr class=format!(
-            "my-4 bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {class}"
+            "my-4 bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {class}",
         )>{children()}</tr>
     }
 }
@@ -36,16 +36,22 @@ impl IntoView for ColumnHeader {
     fn into_view(self) -> View {
         match self.width {
             Some(width) => view! {
-                               <th id=self.id scope="col" class=format!("p-3 md:p-4 w-{}", width) class:text-center=move || self.center>
-                                   {self.label}
-                               </th>
-                           },
+                <th
+                    id=self.id
+                    scope="col"
+                    class=format!("p-3 md:p-4 w-{}", width)
+                    class:text-center=move || self.center
+                >
+                    {self.label}
+                </th>
+            },
             None => view! {
-                        <th id=self.id scope="col" class="p-3 md:p-4" class:text-center=move || self.center>
-                            {self.label}
-                        </th>
-                    },
-        }.into_view()
+                <th id=self.id scope="col" class="p-3 md:p-4" class:text-center=move || self.center>
+                    {self.label}
+                </th>
+            },
+        }
+        .into_view()
     }
 }
 

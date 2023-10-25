@@ -15,6 +15,11 @@
       "component"
     ],
   },
+  "rust-analyzer.rustfmt.overrideCommand": [
+    "leptosfmt",
+    "--stdin",
+    "--rustfmt"
+  ],
   "lldb.verboseLogging": true,
   "lldb.launch.initCommands": [
     "settings set target.disable-aslr false"

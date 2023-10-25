@@ -123,7 +123,7 @@ RUN curl https://sh.rustup.rs -sSf | \
 RUN set -x \
     && rustup update \
     && rustup target add wasm32-unknown-unknown \
-    && cargo install cargo-leptos sea-orm-cli
+    && cargo install cargo-leptos sea-orm-cli leptosfmt
 
 # Change the ownership of Cargo registry to the non-root user
 RUN chown -R $USERNAME:$USERNAME /usr/local/cargo/registry

@@ -276,7 +276,7 @@ fn TodoList(list_id: uuid::Uuid) -> impl IntoView {
     };
 
     view! {
-      <>
+        <>
             <Transition fallback=move || {
                 view! { <h1 class="bg-red-700">"Loading..."</h1> }
             }>
@@ -295,7 +295,9 @@ fn TodoList(list_id: uuid::Uuid) -> impl IntoView {
                             "Search"
                         </label>
                         <div class="absolute left-0 top-2 items-center pl-3 text-gray-400 pointer-events-none">
-                            <div class="w-6 h-6 fill-zinc-600 stroke-zinc-400">{Svg::MagnifyingGlass}</div>
+                            <div class="w-6 h-6 fill-zinc-600 stroke-zinc-400">
+                                {Svg::MagnifyingGlass}
+                            </div>
                         </div>
                         <input
                             type="text"
@@ -305,40 +307,49 @@ fn TodoList(list_id: uuid::Uuid) -> impl IntoView {
                             on:input=move |ev| {
                                 set_search.set(event_target_value(&ev));
                             }
+
                             prop:value=search
                         />
                     </div>
                     <div class="relative">
-                      <div class="absolute top-3.5 left-2 text-zinc-400 fill-zinc-600 stroke-zinc-400 h-6 w-6">
-                        {Svg::MagnifyingGlass}
-                      </div>
-                      <input
-                          id="search"
-                          type="text"
-                          name="search"
-                          placeholder="Search todos.."
-                          class="rounded-sm py-3 pl-9 border border-zinc-300 bg-zinc-100 text-zinc-700 focus:outline focus:outline-offset-2 focus:outline-blue-300 w-full appearance-none"
-                          on:input=move |e| {
-                            set_search.set(event_target_value(&e));
-                          }
-                          prop:value=search
-                      />
+                        <div class="absolute top-3.5 left-2 text-zinc-400 fill-zinc-600 stroke-zinc-400 h-6 w-6">
+                            {Svg::MagnifyingGlass}
+                        </div>
+                        <input
+                            id="search"
+                            type="text"
+                            name="search"
+                            placeholder="Search todos.."
+                            class="rounded-sm py-3 pl-9 border border-zinc-300 bg-zinc-100 text-zinc-700 focus:outline focus:outline-offset-2 focus:outline-blue-300 w-full appearance-none"
+                            on:input=move |e| {
+                                set_search.set(event_target_value(&e));
+                            }
+
+                            prop:value=search
+                        />
                     </div>
                 </div>
                 <Transition fallback=move || {
                     view! { <tr class="bg-red-700">"Loading..."</tr> }
                 }>
-                    <Table column_headers=column_headers.clone()>
+                    <Table column_headers=column_headers
+                        .clone()>
                         {no_todos_row()}
                         <For
                             each=move || list_todos_resource.get().unwrap_or(vec![])
                             key=|todo| todo.calc_hash()
                             children=move |todo: todos::Model| {
                                 view! {
-                                    <TodoRow todo=todo toggle_todo=toggle_todo delete_todo=delete_todo edit_todo=edit_todo/>
+                                    <TodoRow
+                                        todo=todo
+                                        toggle_todo=toggle_todo
+                                        delete_todo=delete_todo
+                                        edit_todo=edit_todo
+                                    />
                                 }
                             }
                         />
+
                     </Table>
                 </Transition>
             </div>
@@ -366,11 +377,9 @@ pub fn TodoListPage() -> impl IntoView {
         <MainLayout>
             <TodoList list_id=list_id()/>
             <A href="/todo" class="flex gap-3 items-center">
-            <div class="h-5 w-5">
-              {Svg::ArrowUturnLeft}
-            </div>
-            <span class="text-base md:text-lg font-semibold">"Back To Todo page"</span>
-          </A>
+                <div class="h-5 w-5">{Svg::ArrowUturnLeft}</div>
+                <span class="text-base md:text-lg font-semibold">"Back To Todo page"</span>
+            </A>
         </MainLayout>
     }
 }

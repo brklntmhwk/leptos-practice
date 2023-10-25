@@ -79,10 +79,10 @@ pub fn Home() -> impl IntoView {
         <MainLayout>
             <h1 class="text-4xl bg-yellow-500">"Welcome home!"</h1>
             <div class="flex gap-4">
-                <Button on:click=count_up class="bg-sky-300 text-white">"Count up!"</Button>
-                <Button
-                    on:click=clear_count class="bg-zinc-400 text-white"
-                >
+                <Button on:click=count_up class="bg-sky-300 text-white">
+                    "Count up!"
+                </Button>
+                <Button on:click=clear_count class="bg-zinc-400 text-white">
                     "Clear"
                 </Button>
                 <p>"Count:" {count}</p>
@@ -90,15 +90,13 @@ pub fn Home() -> impl IntoView {
                 <p>"Derived signal double count:" {derived_signal_double_count}</p>
             </div>
             <Transition fallback=move || {
-                    view! { <p class="bg-red-700">"Loading..."</p> }
+                view! { <p class="bg-red-700">"Loading..."</p> }
             }>
-              <div>
-                "Async resource:" {move || async_data.get().unwrap_or(00000)}
-              </div>
+                <div>"Async resource:" {move || async_data.get().unwrap_or(00000)}</div>
             </Transition>
-            // <div node_ref=el style=move || format!("position: fixed; {}", style.get())>
-            // "Drag me! I am at" {x.get()} {y.get()}
-            // </div>
+        // <div node_ref=el style=move || format!("position: fixed; {}", style.get())>
+        // "Drag me! I am at" {x.get()} {y.get()}
+        // </div>
         </MainLayout>
     }
 }

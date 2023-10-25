@@ -121,14 +121,7 @@ impl IntoView for FormField {
                 }.into_view()
             }
             FormFieldInputType::Hidden => {
-                view! {
-                    <input
-                        type="hidden"
-                        id=self.id.clone()
-                        name=self.id.clone()
-                        value=self.value.clone()
-                    />
-                }.into_view()
+                view! { <input type="hidden" id=self.id.clone() name=self.id.clone() value=self.value.clone()/> }.into_view()
             }
             FormFieldInputType::Password => {
                 view! {

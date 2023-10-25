@@ -152,7 +152,9 @@ pub fn MyTodoListsPage() -> impl IntoView {
     view! {
         <MainLayout>
             <h1>"My Todo Lists"</h1>
-            <p>"These are fetched from database powered by PostgreSQL, and the connection supported by SeaORM."</p>
+            <p>
+                "These are fetched from database powered by PostgreSQL, and the connection supported by SeaORM."
+            </p>
             <div class="overflow-x-auto relative rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
                 <div class="flex justify-between items-center p-2 border-b border-gray-200 md:border-none dark:border-gray-700">
                     <FormDrawerButton
@@ -177,11 +179,17 @@ pub fn MyTodoListsPage() -> impl IntoView {
                                     <TableCell on:click=move |_| {
                                         set_href(format!("/todo/{}", list.id));
                                     }>
-                                        <span onclick="event.cancelBubble = true;">{list.title}</span>
+                                        <span onclick="event.cancelBubble = true;">
+                                            {list.title}
+                                        </span>
                                     </TableCell>
                                     <TableCell class="w-24">
                                         <MultiActionForm action=delete_list_action>
-                                            <input type="hidden" name="list_id" value=move || list.id.to_string()/>
+                                            <input
+                                                type="hidden"
+                                                name="list_id"
+                                                value=move || list.id.to_string()
+                                            />
                                             <Button class="border-none" button_type="submit">
                                                 <div class="w-6 h-6 fill-zinc-700">{Svg::RubbishBin}</div>
                                             </Button>
@@ -191,6 +199,7 @@ pub fn MyTodoListsPage() -> impl IntoView {
                             }
                         }
                     />
+
                 </Table>
             </div>
         </MainLayout>

@@ -9,11 +9,8 @@ pub fn Button(
     #[prop(optional, into)] button_type: String,
 ) -> impl IntoView {
     view! {
-      <button
-        type=button_type
-        class=format!("btn {class}")
-      >
-        {children()}
-      </button>
+        <button type=button_type class=format!("btn {class}")>
+            {children()}
+        </button>
     }
 }
